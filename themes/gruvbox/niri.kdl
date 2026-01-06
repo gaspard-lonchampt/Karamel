@@ -1,0 +1,7 @@
+// gruvbox theme for Niri
+layout {
+    focus-ring {
+        active-color "#a89984"
+        inactive-color "#414868"
+    }
+}

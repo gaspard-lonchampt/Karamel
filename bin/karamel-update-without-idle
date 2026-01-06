@@ -1,0 +1,6 @@
+#!/bin/bash
+# In Niri, we just run the update directly
+# Swayidle can be temporarily disabled if needed
+pkill -STOP swayidle 2>/dev/null || true
+karamel-update "$@"
+pkill -CONT swayidle 2>/dev/null || true

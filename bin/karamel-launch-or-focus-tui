@@ -1,0 +1,6 @@
+#!/bin/bash
+
+APP_ID="org.karamel.$(basename $1)"
+LAUNCH_COMMAND="karamel-launch-tui $@"
+
+exec karamel-launch-or-focus "$APP_ID" "$LAUNCH_COMMAND"

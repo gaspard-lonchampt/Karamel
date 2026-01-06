@@ -1,0 +1,4 @@
+#!/bin/bash
+
+karamel-refresh-config wlsunset/config
+karamel-restart-wlsunset

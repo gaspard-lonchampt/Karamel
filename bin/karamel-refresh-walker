@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Ensure walker is set to autostart
+mkdir -p ~/.config/autostart/
+cp $KARAMEL_PATH/autostart/walker.desktop ~/.config/autostart/
+systemctl --user daemon-reload
+
+karamel-refresh-config walker/config.toml
+karamel-refresh-config elephant/calc.toml
+karamel-refresh-config elephant/desktopapplications.toml
+karamel-restart-walker

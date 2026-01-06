@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# A script to display Niri keybindings in an interactive menu using walker
+
+# Get monitor height for menu sizing
+monitor_height=$(niri msg -j outputs | jq -r '.[] | select(.is_focused == true) | .logical.height')
+menu_height=${monitor_height:-800}
+menu_height=$((menu_height * 40 / 100))
+
+# Define keybindings (since Niri doesn't have a bindings query API)
+keybindings() {
+  cat << 'EOF'
+SUPER + Return                      → Terminal
+SUPER + SHIFT + F                   → File manager
+SUPER + SHIFT + B                   → Browser
+SUPER + SHIFT + ALT + B             → Browser (private)
+SUPER + SHIFT + M                   → Music (Spotify)
+SUPER + SHIFT + N                   → Editor
+SUPER + SHIFT + T                   → Activity (btop)
+SUPER + SHIFT + D                   → Docker (lazydocker)
+SUPER + SHIFT + G                   → Signal
+SUPER + SHIFT + O                   → Obsidian
+SUPER + SHIFT + W                   → Typora
+SUPER + SHIFT + /                   → Password Manager (Bitwarden)
+SUPER + Space                       → Launch apps
+SUPER + ALT + Space                 → Karamel menu
+SUPER + Escape                      → System menu
+SUPER + K                           → Show key bindings
+SUPER + W                           → Close window
+SUPER + SHIFT + E                   → Quit Niri
+SUPER + Left/Right                  → Focus column left/right
+SUPER + Up/Down                     → Focus window up/down
+SUPER + SHIFT + Left/Right          → Move column left/right
+SUPER + SHIFT + Up/Down             → Move window up/down
+SUPER + 1-9                         → Switch to workspace 1-9
+SUPER + SHIFT + 1-9                 → Move column to workspace 1-9
+SUPER + Tab                         → Next workspace
+SUPER + SHIFT + Tab                 → Previous workspace
+SUPER + R                           → Switch preset column width
+SUPER + F                           → Maximize column
+SUPER + SHIFT + F                   → Fullscreen window
+SUPER + T                           → Toggle window floating
+SUPER + C                           → Center column
+SUPER + - / =                       → Resize column width
+SUPER + SHIFT + - / =               → Resize window height
+SUPER + [ / ]                       → Consume/expel window from column
+Print                               → Screenshot
+SHIFT + Print                       → Screenshot screen
+ALT + Print                         → Screenshot window
+SUPER + ,                           → Dismiss notification
+SUPER + SHIFT + ,                   → Dismiss all notifications
+SUPER + SHIFT + Space               → Toggle top bar
+SUPER + CTRL + Space                → Next background
+SUPER + SHIFT + CTRL + Space        → Theme menu
+SUPER + CTRL + I                    → Toggle idle lock
+SUPER + CTRL + N                    → Toggle nightlight
+SUPER + CTRL + L                    → Lock screen
+XF86AudioRaiseVolume                → Volume up
+XF86AudioLowerVolume                → Volume down
+XF86AudioMute                       → Mute toggle
+XF86MonBrightnessUp                 → Brightness up
+XF86MonBrightnessDown               → Brightness down
+XF86AudioPlay                       → Play/Pause
+XF86AudioNext                       → Next track
+XF86AudioPrev                       → Previous track
+EOF
+}
+
+keybindings | walker --dmenu -p 'Keybindings' --width 800 --height "$menu_height"

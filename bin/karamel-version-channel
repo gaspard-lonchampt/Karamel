@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if grep -q "https://stable-mirror.karamel.org/" /etc/pacman.d/mirrorlist; then
+  mirror="stable"
+elif grep -q "https://mirror.karamel.org/" /etc/pacman.d/mirrorlist; then
+  mirror="edge"
+else
+  mirror="unknown"
+fi
+
+if grep -q "https://pkgs.karamel.org/stable/" /etc/pacman.conf; then
+  pkgs="stable"
+elif grep -q "https://pkgs.karamel.org/edge/" /etc/pacman.conf; then
+  pkgs="edge"
+else
+  pkgs="unknown"
+fi
+
+if [[ $mirror == $pkgs ]]; then
+  echo $mirror
+else
+  echo "$mirror / $pkgs"
+fi

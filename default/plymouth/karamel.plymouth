@@ -1,0 +1,11 @@
+[Plymouth Theme]
+Name=Karamel
+Description=Karamel splash screen.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/karamel
+ScriptFile=/usr/share/plymouth/themes/karamel/karamel.script
+ConsoleLogBackgroundColor=0x1a1b26
+MonospaceFont=Cantarell 11
+Font=Cantarell 11

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+karamel-update-time
+karamel-update-keyring
+karamel-update-available-reset
+karamel-update-system-pkgs
+karamel-migrate
+karamel-hook post-update
+karamel-update-restart

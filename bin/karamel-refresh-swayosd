@@ -1,0 +1,5 @@
+#!/bin/bash
+
+karamel-refresh-config swayosd/config.toml
+karamel-refresh-config swayosd/style.css
+karamel-restart-swayosd

@@ -1,0 +1,7 @@
+// osaka-jade theme for Niri
+layout {
+    focus-ring {
+        active-color "#214237"
+        inactive-color "#414868"
+    }
+}

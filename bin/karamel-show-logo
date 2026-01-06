@@ -1,0 +1,7 @@
+#!/bin/bash
+
+clear
+echo -e "\033[38;5;208m"
+cat <~/.local/share/karamel/logo.txt
+echo -e "\033[0m"
+echo

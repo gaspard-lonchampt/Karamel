@@ -1,0 +1,4 @@
+#!/bin/bash
+
+karamel-refresh-config swayidle/config
+karamel-restart-swayidle

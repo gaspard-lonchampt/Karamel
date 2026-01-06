@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Pop window out as floating in Niri
+# This script toggles floating mode for the focused window
+
+focused=$(niri msg -j focused-window)
+
+if [[ -z "$focused" || "$focused" == "null" ]]; then
+  notify-send "No window focused"
+  exit 1
+fi
+
+window_id=$(echo "$focused" | jq -r '.id')
+is_floating=$(echo "$focused" | jq -r '.is_floating')
+
+if [[ "$is_floating" == "true" ]]; then
+  # If already floating, un-float it
+  niri msg action toggle-window-floating
+else
+  # Make it floating and resize
+  niri msg action toggle-window-floating
+  # Note: Niri doesn't have move/resize commands for floating windows via msg yet
+  notify-send "Window is now floating"
+fi

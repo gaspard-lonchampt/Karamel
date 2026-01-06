@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rfkill unblock bluetooth
+exec karamel-launch-or-focus-tui bluetui

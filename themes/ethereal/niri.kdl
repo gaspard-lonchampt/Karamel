@@ -1,0 +1,7 @@
+// ethereal theme for Niri
+layout {
+    focus-ring {
+        active-color "#c89dc1"
+        inactive-color "#414868"
+    }
+}

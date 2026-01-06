@@ -1,0 +1,5 @@
+#!/bin/bash
+
+karamel-refresh-config waybar/config.jsonc
+karamel-refresh-config waybar/style.css
+karamel-restart-waybar

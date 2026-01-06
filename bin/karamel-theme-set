@@ -1,0 +1,44 @@
+#!/bin/bash
+
+if [[ -z $1 && $1 != "CNCLD" ]]; then
+  echo "Usage: karamel-theme-set <theme-name>"
+  exit 1
+fi
+
+THEMES_DIR="$HOME/.config/karamel/themes/"
+CURRENT_THEME_DIR="$HOME/.config/karamel/current/theme"
+
+THEME_NAME=$(echo "$1" | sed -E 's/<[^>]+>//g' | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+THEME_PATH="$THEMES_DIR/$THEME_NAME"
+
+# Check if the theme entered exists
+if [[ ! -d "$THEME_PATH" ]]; then
+  echo "Theme '$THEME_NAME' does not exist in $THEMES_DIR"
+  exit 1
+fi
+
+# Update theme symlinks
+ln -nsf "$THEME_PATH" "$CURRENT_THEME_DIR"
+
+# Change background with theme
+karamel-theme-bg-next
+
+# Restart components to apply new theme
+if pgrep -x waybar >/dev/null; then
+  karamel-restart-waybar
+fi
+karamel-restart-swayosd
+karamel-restart-terminal
+# Niri doesn't need a reload command - config changes are applied automatically
+pkill -SIGUSR2 btop
+makoctl reload
+
+# Change gnome, browser, vscode, cursor themes
+karamel-theme-set-gnome
+karamel-theme-set-browser
+karamel-theme-set-vscode
+karamel-theme-set-cursor
+karamel-theme-set-obsidian
+
+# Call hook on theme set
+karamel-hook theme-set "$THEME_NAME"

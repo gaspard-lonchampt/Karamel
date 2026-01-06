@@ -1,0 +1,485 @@
+#!/bin/bash
+
+export PATH="$HOME/.local/share/karamel/bin:$PATH"
+
+# Set to true when going directly to a submenu, so we can exit directly
+BACK_TO_EXIT=false
+
+back_to() {
+  local parent_menu="$1"
+
+  if [[ "$BACK_TO_EXIT" == "true" ]]; then
+    exit 0
+  elif [[ -n "$parent_menu" ]]; then
+    "$parent_menu"
+  else
+    show_main_menu
+  fi
+}
+
+menu() {
+  local prompt="$1"
+  local options="$2"
+  local extra="$3"
+  local preselect="$4"
+
+  read -r -a args <<<"$extra"
+
+  if [[ -n "$preselect" ]]; then
+    local index
+    index=$(echo -e "$options" | grep -nxF "$preselect" | cut -d: -f1)
+    if [[ -n "$index" ]]; then
+      args+=("-c" "$index")
+    fi
+  fi
+
+  echo -e "$options" | karamel-launch-walker --dmenu --width 295 --minheight 1 --maxheight 630 -p "$prompt…" "${args[@]}" 2>/dev/null
+}
+
+terminal() {
+  xdg-terminal-exec --app-id=org.karamel.terminal "$@"
+}
+
+present_terminal() {
+  karamel-launch-floating-terminal-with-presentation $1
+}
+
+open_in_editor() {
+  notify-send "Editing config file" "$1"
+  karamel-launch-editor "$1"
+}
+
+install() {
+  present_terminal "echo 'Installing $1...'; sudo pacman -S --noconfirm $2"
+}
+
+install_and_launch() {
+  present_terminal "echo 'Installing $1...'; sudo pacman -S --noconfirm $2 && setsid gtk-launch $3"
+}
+
+install_font() {
+  present_terminal "echo 'Installing $1...'; sudo pacman -S --noconfirm --needed $2 && sleep 2 && karamel-font-set '$3'"
+}
+
+install_terminal() {
+  present_terminal "karamel-install-terminal $1"
+}
+
+aur_install() {
+  present_terminal "echo 'Installing $1 from AUR...'; yay -S --noconfirm $2"
+}
+
+aur_install_and_launch() {
+  present_terminal "echo 'Installing $1 from AUR...'; yay -S --noconfirm $2 && setsid gtk-launch $3"
+}
+
+show_learn_menu() {
+  case $(menu "Learn" "  Keybindings\n  Karamel\n  Niri\n󰣇  Arch\n  Neovim\n󱆃  Bash") in
+  *Keybindings*) karamel-menu-keybindings ;;
+  *Karamel*) karamel-launch-webapp "https://learn.omacom.io/2/the-karamel-manual" ;;
+  *Niri*) karamel-launch-webapp "https://github.com/YaLTeR/niri/wiki/" ;;
+  *Arch*) karamel-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
+  *Bash*) karamel-launch-webapp "https://devhints.io/bash" ;;
+  *Neovim*) karamel-launch-webapp "https://www.lazyvim.org/keymaps" ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_trigger_menu() {
+  case $(menu "Trigger" "  Capture\n  Share\n󰔎  Toggle") in
+  *Capture*) show_capture_menu ;;
+  *Share*) show_share_menu ;;
+  *Toggle*) show_toggle_menu ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_capture_menu() {
+  case $(menu "Capture" "  Screenshot\n  Screenrecord\n󰃉  Color") in
+  *Screenshot*) show_screenshot_menu ;;
+  *Screenrecord*) show_screenrecord_menu ;;
+  *Color*) wl-color-picker ;;
+  *) show_trigger_menu ;;
+  esac
+}
+
+show_screenshot_menu() {
+  case $(menu "Screenshot" "  Snap with Editing\n  Straight to Clipboard") in
+  *Editing*) karamel-cmd-screenshot smart ;;
+  *Clipboard*) karamel-cmd-screenshot smart clipboard ;;
+  *) show_capture_menu ;;
+  esac
+}
+
+show_screenrecord_menu() {
+  karamel-cmd-screenrecord --stop-recording && exit 0
+
+  case $(menu "Screenrecord" "  With desktop audio\n  With desktop + microphone audio\n  With desktop + microphone audio + webcam") in
+  *"With desktop audio") karamel-cmd-screenrecord --with-desktop-audio ;;
+  *"With desktop + microphone audio") karamel-cmd-screenrecord --with-desktop-audio --with-microphone-audio ;;
+  *"With desktop + microphone audio + webcam") karamel-cmd-screenrecord --with-desktop-audio --with-microphone-audio --with-webcam ;;
+  *) back_to show_capture_menu ;;
+  esac
+}
+
+show_share_menu() {
+  case $(menu "Share" "  Clipboard\n  File \n  Folder") in
+  *Clipboard*) karamel-cmd-share clipboard ;;
+  *File*) terminal bash -c "karamel-cmd-share file" ;;
+  *Folder*) terminal bash -c "karamel-cmd-share folder" ;;
+  *) back_to show_trigger_menu ;;
+  esac
+}
+
+show_toggle_menu() {
+  case $(menu "Toggle" "󱄄  Screensaver\n󰔎  Nightlight\n󱫖  Idle Lock\n󰍜  Top Bar") in
+  *Screensaver*) karamel-toggle-screensaver ;;
+  *Nightlight*) karamel-toggle-nightlight ;;
+  *Idle*) karamel-toggle-idle ;;
+  *Bar*) karamel-toggle-waybar ;;
+  *) show_trigger_menu ;;
+  esac
+}
+
+show_style_menu() {
+  case $(menu "Style" "󰸌  Theme\n  Font\n  Background\n  Niri\n󱄄  Screensaver\n  About") in
+  *Theme*) show_theme_menu ;;
+  *Font*) show_font_menu ;;
+  *Background*) karamel-theme-bg-next ;;
+  *Niri*) open_in_editor ~/.config/niri/looknfeel.conf ;;
+  *Screensaver*) open_in_editor ~/.config/karamel/branding/screensaver.txt ;;
+  *About*) open_in_editor ~/.config/karamel/branding/about.txt ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_theme_menu() {
+  karamel-launch-walker -m menus:karamelthemes --width 800 --minheight 400
+}
+
+show_font_menu() {
+  theme=$(menu "Font" "$(karamel-font-list)" "--width 350" "$(karamel-font-current)")
+  if [[ "$theme" == "CNCLD" || -z "$theme" ]]; then
+    back_to show_style_menu
+  else
+    karamel-font-set "$theme"
+  fi
+}
+
+show_setup_menu() {
+  local options="  Audio\n  Wifi\n󰂯  Bluetooth\n󱐋  Power Profile\n󰍹  Monitors"
+  [ -f ~/.config/niri/bindings.conf ] && options="$options\n  Keybindings"
+  [ -f ~/.config/niri/input.conf ] && options="$options\n  Input"
+  options="$options\n  Defaults\n󰱔  DNS\n  Security\n  Config"
+
+  case $(menu "Setup" "$options") in
+  *Audio*) karamel-launch-or-focus-tui wiremix ;;
+  *Wifi*) karamel-launch-wifi ;;
+  *Bluetooth*) karamel-launch-bluetooth ;;
+  *Power*) show_setup_power_menu ;;
+  *Monitors*) open_in_editor ~/.config/niri/monitors.conf ;;
+  *Keybindings*) open_in_editor ~/.config/niri/bindings.conf ;;
+  *Input*) open_in_editor ~/.config/niri/input.conf ;;
+  *Defaults*) open_in_editor ~/.config/uwsm/default ;;
+  *DNS*) present_terminal karamel-setup-dns ;;
+  *Security*) show_setup_security_menu ;;
+  *Config*) show_setup_config_menu ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_setup_power_menu() {
+  profile=$(menu "Power Profile" "$(karamel-powerprofiles-list)" "" "$(powerprofilesctl get)")
+
+  if [[ "$profile" == "CNCLD" || -z "$profile" ]]; then
+    back_to show_setup_menu
+  else
+    powerprofilesctl set "$profile"
+  fi
+}
+
+show_setup_config_menu() {
+  case $(menu "Setup" "  Niri\n  Swayidle\n  Swaylock\n  Wlsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar\n󰞅  XCompose") in
+  *Niri*) open_in_editor ~/.config/niri/niri.conf ;;
+  *Swayidle*) open_in_editor ~/.config/niri/swayidle.conf && karamel-restart-swayidle ;;
+  *Swaylock*) open_in_editor ~/.config/niri/swaylock.conf ;;
+  *Wlsunset*) open_in_editor ~/.config/niri/wlsunset.conf && karamel-restart-wlsunset ;;
+  *Swayosd*) open_in_editor ~/.config/swayosd/config.toml && karamel-restart-swayosd ;;
+  *Walker*) open_in_editor ~/.config/walker/config.toml && karamel-restart-walker ;;
+  *Waybar*) open_in_editor ~/.config/waybar/config.jsonc && karamel-restart-waybar ;;
+  *XCompose*) open_in_editor ~/.XCompose && karamel-restart-xcompose ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_setup_security_menu() {
+  case $(menu "Setup" "󰈷  Fingerprint\n  Fido2") in
+  *Fingerprint*) present_terminal karamel-setup-fingerprint ;;
+  *Fido2*) present_terminal karamel-setup-fido2 ;;
+  *) show_setup_menu ;;
+  esac
+}
+
+show_install_menu() {
+  case $(menu "Install" "󰣇  Package\n󰣇  AUR\n  Web App\n  TUI\n  Service\n  Style\n󰵮  Development\n  Editor\n  Terminal\n󱚤  AI\n󰍲  Windows\n  Gaming") in
+  *Package*) terminal karamel-pkg-install ;;
+  *AUR*) terminal karamel-pkg-aur-install ;;
+  *Web*) present_terminal karamel-webapp-install ;;
+  *TUI*) present_terminal karamel-tui-install ;;
+  *Service*) show_install_service_menu ;;
+  *Style*) show_install_style_menu ;;
+  *Development*) show_install_development_menu ;;
+  *Editor*) show_install_editor_menu ;;
+  *Terminal*) show_install_terminal_menu ;;
+  *AI*) show_install_ai_menu ;;
+  *Windows*) present_terminal "karamel-windows-vm install" ;;
+  *Gaming*) show_install_gaming_menu ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_install_service_menu() {
+  case $(menu "Install" "  Dropbox\n  Tailscale\n󰟵  Bitwarden\n  Chromium Account") in
+  *Dropbox*) present_terminal karamel-install-dropbox ;;
+  *Tailscale*) present_terminal karamel-install-tailscale ;;
+  *Bitwarden*) install_and_launch "Bitwarden" "bitwarden bitwarden-cli" "bitwarden" ;;
+  *Chromium*) present_terminal karamel-install-chromium-google-account ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_editor_menu() {
+  case $(menu "Install" "  VSCode\n  Cursor\n  Zed\n  Sublime Text\n  Helix\n  Emacs") in
+  *VSCode*) present_terminal karamel-install-vscode ;;
+  *Cursor*) install_and_launch "Cursor" "cursor-bin" "cursor" ;;
+  *Zed*) present_terminal "echo 'Installing Zed...'; sudo pacman -S zed && setsid gtk-launch dev.zed.Zed" ;;
+  *Sublime*) install_and_launch "Sublime Text" "sublime-text-4" "sublime_text" ;;
+  *Helix*) install "Helix" "helix" ;;
+  *Emacs*) install "Emacs" "emacs-wayland" && systemctl --user enable --now emacs.service ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_terminal_menu() {
+  case $(menu "Install" "  Alacritty\n  Ghostty\n  Kitty") in
+  *Alacritty*) install_terminal "alacritty" ;;
+  *Ghostty*) install_terminal "ghostty" ;;
+  *Kitty*) install_terminal "kitty" ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_ai_menu() {
+  ollama_pkg=$(
+    (command -v nvidia-smi &>/dev/null && echo ollama-cuda) ||
+      (command -v rocminfo &>/dev/null && echo ollama-rocm) ||
+      echo ollama
+  )
+
+  case $(menu "Install" "󱚤  Claude Code\n󱚤  Cursor CLI\n󱚤  Gemini\n󱚤  OpenAI Codex\n󱚤  LM Studio\n󱚤  Ollama\n󱚤  Crush\n󱚤  opencode") in
+  *Claude*) install "Claude Code" "claude-code" ;;
+  *Cursor*) install "Cursor CLI" "cursor-cli" ;;
+  *OpenAI*) install "OpenAI Codex" "openai-codex-bin" ;;
+  *Gemini*) install "Gemini" "gemini-cli" ;;
+  *Studio*) install "LM Studio" "lmstudio" ;;
+  *Ollama*) install "Ollama" $ollama_pkg ;;
+  *Crush*) install "Crush" "crush-bin" ;;
+  *opencode*) install "opencode" "opencode" ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_gaming_menu() {
+  case $(menu "Install" "  Steam\n  RetroArch [AUR]\n󰍳  Minecraft\n󰖺  Xbox Controller [AUR]") in
+  *Steam*) present_terminal karamel-install-steam ;;
+  *RetroArch*) aur_install_and_launch "RetroArch" "retroarch retroarch-assets libretro libretro-fbneo" "com.libretro.RetroArch.desktop" ;;
+  *Minecraft*) install_and_launch "Minecraft" "minecraft-launcher" "minecraft-launcher" ;;
+  *Xbox*) present_terminal karamel-install-xbox-controllers ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_style_menu() {
+  case $(menu "Install" "󰸌  Theme\n  Background\n  Font") in
+  *Theme*) present_terminal karamel-theme-install ;;
+  *Background*) nautilus ~/.config/karamel/current/theme/backgrounds ;;
+  *Font*) show_install_font_menu ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_font_menu() {
+  case $(menu "Install" "  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bistream Vera Mono\n  Iosevka" "--width 350") in
+  *Meslo*) install_font "Meslo LG Mono" "ttf-meslo-nerd" "MesloLGL Nerd Font" ;;
+  *Fira*) install_font "Fira Code" "ttf-firacode-nerd" "FiraCode Nerd Font" ;;
+  *Victor*) install_font "Victor Code" "ttf-victor-mono-nerd" "VictorMono Nerd Font" ;;
+  *Bistream*) install_font "Bistream Vera Code" "ttf-bitstream-vera-mono-nerd" "BitstromWera Nerd Font" ;;
+  *Iosevka*) install_font "Iosevka" "ttf-iosevka-nerd" "Iosevka Nerd Font Mono" ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_development_menu() {
+  case $(menu "Install" "󰫏  Ruby on Rails\n  Docker DB\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure") in
+  *Rails*) present_terminal "karamel-install-dev-env ruby" ;;
+  *Docker*) present_terminal karamel-install-docker-dbs ;;
+  *JavaScript*) show_install_javascript_menu ;;
+  *Go*) present_terminal "karamel-install-dev-env go" ;;
+  *PHP*) show_install_php_menu ;;
+  *Python*) present_terminal "karamel-install-dev-env python" ;;
+  *Elixir*) show_install_elixir_menu ;;
+  *Zig*) present_terminal "karamel-install-dev-env zig" ;;
+  *Rust*) present_terminal "karamel-install-dev-env rust" ;;
+  *Java*) present_terminal "karamel-install-dev-env java" ;;
+  *NET*) present_terminal "karamel-install-dev-env dotnet" ;;
+  *OCaml*) present_terminal "karamel-install-dev-env ocaml" ;;
+  *Clojure*) present_terminal "karamel-install-dev-env clojure" ;;
+  *) show_install_menu ;;
+  esac
+}
+
+show_install_javascript_menu() {
+  case $(menu "Install" "  Node.js\n  Bun\n  Deno") in
+  *Node*) present_terminal "karamel-install-dev-env node" ;;
+  *Bun*) present_terminal "karamel-install-dev-env bun" ;;
+  *Deno*) present_terminal "karamel-install-dev-env deno" ;;
+  *) show_install_development_menu ;;
+  esac
+}
+
+show_install_php_menu() {
+  case $(menu "Install" "  PHP\n  Laravel\n  Symfony") in
+  *PHP*) present_terminal "karamel-install-dev-env php" ;;
+  *Laravel*) present_terminal "karamel-install-dev-env laravel" ;;
+  *Symfony*) present_terminal "karamel-install-dev-env symfony" ;;
+  *) show_install_development_menu ;;
+  esac
+}
+
+show_install_elixir_menu() {
+  case $(menu "Install" "  Elixir\n  Phoenix") in
+  *Elixir*) present_terminal "karamel-install-dev-env elixir" ;;
+  *Phoenix*) present_terminal "karamel-install-dev-env phoenix" ;;
+  *) show_install_development_menu ;;
+  esac
+}
+
+show_remove_menu() {
+  case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰸌  Theme\n󰍲  Windows\n󰈷  Fingerprint\n  Fido2") in
+  *Package*) terminal karamel-pkg-remove ;;
+  *Web*) present_terminal karamel-webapp-remove ;;
+  *TUI*) present_terminal karamel-tui-remove ;;
+  *Theme*) present_terminal karamel-theme-remove ;;
+  *Windows*) present_terminal "karamel-windows-vm remove" ;;
+  *Fingerprint*) present_terminal "karamel-setup-fingerprint --remove" ;;
+  *Fido2*) present_terminal "karamel-setup-fido2 --remove" ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_update_menu() {
+  case $(menu "Update" " Karamel\n󰔫  Channel\n  Config\n󰸌  Extra Themes\n  Process\n󰇅  Hardware\n  Firmware\n  Password\n  Timezone\n  Time") in
+  *Karamel*) present_terminal karamel-update ;;
+  *Channel*) show_update_channel_menu ;;
+  *Config*) show_update_config_menu ;;
+  *Themes*) present_terminal karamel-theme-update ;;
+  *Process*) show_update_process_menu ;;
+  *Hardware*) show_update_hardware_menu ;;
+  *Firmware*) present_terminal karamel-update-firmware ;;
+  *Timezone*) present_terminal karamel-tz-select ;;
+  *Time*) present_terminal karamel-update-time ;;
+  *Password*) show_update_password_menu ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_update_channel_menu() {
+  case $(menu "Update channel" "🟢 Stable\n🟡 Edge\n🔴 Dev") in
+  *Stable*) present_terminal "karamel-channel-set stable" ;;
+  *Edge*) present_terminal "karamel-channel-set edge" ;;
+  *Dev*) present_terminal "karamel-channel-set dev" ;;
+  *) show_update_menu ;;
+  esac
+}
+show_update_process_menu() {
+  case $(menu "Restart" "  Swayidle\n  Wlsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar") in
+  *Swayidle*) karamel-restart-swayidle ;;
+  *Wlsunset*) karamel-restart-wlsunset ;;
+  *Swayosd*) karamel-restart-swayosd ;;
+  *Walker*) karamel-restart-walker ;;
+  *Waybar*) karamel-restart-waybar ;;
+  *) show_update_menu ;;
+  esac
+}
+
+show_update_config_menu() {
+  case $(menu "Use default config" "  Niri\n  Swayidle\n  Swaylock\n  Wlsunset\n󱣴  Plymouth\n  Swayosd\n󰌧  Walker\n󰍜  Waybar") in
+  *Niri*) present_terminal karamel-refresh-niri ;;
+  *Swayidle*) present_terminal karamel-refresh-swayidle ;;
+  *Swaylock*) present_terminal karamel-refresh-swaylock ;;
+  *Wlsunset*) present_terminal karamel-refresh-wlsunset ;;
+  *Plymouth*) present_terminal karamel-refresh-plymouth ;;
+  *Swayosd*) present_terminal karamel-refresh-swayosd ;;
+  *Walker*) present_terminal karamel-refresh-walker ;;
+  *Waybar*) present_terminal karamel-refresh-waybar ;;
+  *) show_update_menu ;;
+  esac
+}
+
+show_update_hardware_menu() {
+  case $(menu "Restart" "  Audio\n󱚾  Wi-Fi\n󰂯  Bluetooth") in
+  *Audio*) present_terminal karamel-restart-pipewire ;;
+  *Wi-Fi*) present_terminal karamel-restart-wifi ;;
+  *Bluetooth*) present_terminal karamel-restart-bluetooth ;;
+  *) show_update_menu ;;
+  esac
+}
+
+show_update_password_menu() {
+  case $(menu "Update Password" "  Drive Encryption\n  User") in
+  *Drive*) present_terminal karamel-drive-set-password ;;
+  *User*) present_terminal passwd ;;
+  *) show_update_menu ;;
+  esac
+}
+
+show_system_menu() {
+  case $(menu "System" "  Lock\n󱄄  Screensaver\n󰜉  Restart\n󰐥  Shutdown") in
+  *Lock*) karamel-lock-screen ;;
+  *Screensaver*) karamel-launch-screensaver force ;;
+  *Restart*) karamel-cmd-reboot ;;
+  *Shutdown*) karamel-cmd-shutdown ;;
+  *) back_to show_main_menu ;;
+  esac
+}
+
+show_main_menu() {
+  go_to_menu "$(menu "Go" "󰀻  Apps\n󰧑  Learn\n󱓞  Trigger\n  Style\n  Setup\n󰉉  Install\n󰭌  Remove\n  Update\n  About\n  System")"
+}
+
+go_to_menu() {
+  case "${1,,}" in
+  *apps*) walker -p "Launch…" ;;
+  *learn*) show_learn_menu ;;
+  *trigger*) show_trigger_menu ;;
+  *share*) show_share_menu ;;
+  *style*) show_style_menu ;;
+  *theme*) show_theme_menu ;;
+  *screenshot*) show_screenshot_menu ;;
+  *screenrecord*) show_screenrecord_menu ;;
+  *setup*) show_setup_menu ;;
+  *power*) show_setup_power_menu ;;
+  *install*) show_install_menu ;;
+  *remove*) show_remove_menu ;;
+  *update*) show_update_menu ;;
+  *about*) karamel-launch-about ;;
+  *system*) show_system_menu ;;
+  esac
+}
+
+if [[ -n "$1" ]]; then
+  BACK_TO_EXIT=true
+  go_to_menu "$1"
+else
+  show_main_menu
+fi

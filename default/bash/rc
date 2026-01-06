@@ -1,0 +1,6 @@
+source ~/.local/share/karamel/default/bash/shell
+source ~/.local/share/karamel/default/bash/aliases
+source ~/.local/share/karamel/default/bash/functions
+source ~/.local/share/karamel/default/bash/init
+source ~/.local/share/karamel/default/bash/envs
+[[ $- == *i* ]] && bind -f ~/.local/share/karamel/default/bash/inputrc

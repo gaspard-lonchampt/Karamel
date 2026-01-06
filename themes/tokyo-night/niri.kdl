@@ -1,0 +1,9 @@
+// Tokyo Night theme for Niri
+// This file is sourced by the main Niri config
+
+layout {
+    focus-ring {
+        active-color "#33ccff"
+        inactive-color "#414868"
+    }
+}

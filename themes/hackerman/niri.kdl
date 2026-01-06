@@ -1,0 +1,7 @@
+// hackerman theme for Niri
+layout {
+    focus-ring {
+        active-color "#86a7df"
+        inactive-color "#414868"
+    }
+}

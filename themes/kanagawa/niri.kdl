@@ -1,0 +1,7 @@
+// kanagawa theme for Niri
+layout {
+    focus-ring {
+        active-color "#dcd7ba"
+        inactive-color "#414868"
+    }
+}

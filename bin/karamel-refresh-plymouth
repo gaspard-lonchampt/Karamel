@@ -1,0 +1,10 @@
+#!/bin/bash
+
+sudo cp ~/.local/share/karamel/default/plymouth/* /usr/share/plymouth/themes/karamel/
+sudo plymouth-set-default-theme karamel
+
+if command -v limine-mkinitcpio &>/dev/null; then
+  sudo limine-mkinitcpio
+else
+  sudo mkinitcpio -P
+fi

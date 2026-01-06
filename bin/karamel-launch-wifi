@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rfkill unblock wifi
+karamel-launch-or-focus-tui impala

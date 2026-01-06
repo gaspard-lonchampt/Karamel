@@ -1,0 +1,8 @@
+# Karamel Swayidle Configuration
+# Handles screen locking and power management
+
+timeout 300 'swaylock -f'
+timeout 600 'niri msg action power-off-monitors'
+resume 'niri msg action power-on-monitors'
+before-sleep 'swaylock -f'
+lock 'swaylock -f'

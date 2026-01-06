@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Default temperature values
+ON_TEMP=4000
+OFF_TEMP=6000
+
+# Check if nightlight mode is active by checking a state file
+STATE_FILE=~/.local/state/karamel/toggles/nightlight-on
+
+restart_nightlighted_waybar() {
+  if grep -q "custom/nightlight" ~/.config/waybar/config.jsonc 2>/dev/null; then
+    karamel-restart-waybar # restart waybar in case user has waybar module for wlsunset
+  fi
+}
+
+if [[ -f "$STATE_FILE" ]]; then
+  # Nightlight is on, turn it off
+  pkill wlsunset 2>/dev/null || true
+  sleep 0.2
+  setsid uwsm-app -- wlsunset -t $OFF_TEMP -T $OFF_TEMP &
+  rm -f "$STATE_FILE"
+  notify-send "Daylight screen temperature"
+  restart_nightlighted_waybar
+else
+  # Nightlight is off, turn it on
+  pkill wlsunset 2>/dev/null || true
+  sleep 0.2
+  setsid uwsm-app -- wlsunset -t $ON_TEMP -T $ON_TEMP &
+  mkdir -p ~/.local/state/karamel/toggles
+  touch "$STATE_FILE"
+  notify-send "Nightlight screen temperature"
+  restart_nightlighted_waybar
+fi

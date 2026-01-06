@@ -1,0 +1,237 @@
+# Karamel core package list installed via install/packaging/base.sh
+# This file is also used by the ISO builder when determining needs
+
+# ===== NIRI (Wayland Compositor) =====
+niri
+swayidle
+swaylock-effects
+swww
+wlsunset
+xdg-desktop-portal-gnome
+xdg-desktop-portal-gtk
+xdg-terminal-exec
+xorg-xwayland
+xwayland-satellite
+
+# ===== WAYLAND SESSION =====
+polkit-gnome
+qt5-wayland
+qt6-wayland
+uwsm
+
+# ===== BITWARDEN =====
+bitwarden
+
+# ===== TERMINAL & SHELL =====
+aether
+alacritty
+bash-completion
+bat
+btop
+dust
+eza
+fastfetch
+fish
+fzf
+ghostty
+lazydocker
+lazygit
+less
+mcfly
+starship
+tldr
+tmux
+zoxide
+
+# ===== SYSTEM UTILITIES =====
+asdcontrol
+avahi
+bolt
+brightnessctl
+expac
+inetutils
+inxi
+iwd
+jq
+man-db
+pamixer
+playerctl
+plocate
+power-profiles-daemon
+tzupdate
+unzip
+usage
+whois
+wireless-regdb
+xmlstarlet
+
+# ===== WAYLAND TOOLS =====
+grim
+gum
+satty
+slurp
+swayosd
+waybar
+wayfreeze
+wl-clipboard
+wl-clip-persist
+
+# ===== AUDIO (PipeWire) =====
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+wiremix
+wireplumber
+
+# ===== BLUETOOTH & WIFI =====
+bluetui
+impala
+
+# ===== FONTS =====
+fontconfig
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+noto-fonts-extra
+ttf-cascadia-mono-nerd
+ttf-ia-writer
+ttf-jetbrains-mono-nerd
+woff2-font-awesome
+
+# ===== THEMING & UI =====
+gnome-themes-extra
+kvantum-qt5
+mako
+plymouth
+python-terminaltexteffects
+yaru-icon-theme
+
+# ===== FILE MANAGEMENT =====
+gvfs-mtp
+gvfs-nfs
+gvfs-smb
+nautilus
+sushi
+yazi
+
+# ===== DEVELOPMENT - GIT =====
+git
+github-cli
+lazygit
+
+# ===== DEVELOPMENT - LANGUAGES =====
+clang
+llvm
+luarocks
+mise
+nodejs
+perl
+php
+pnpm
+python
+python-gobject
+python-pip
+python-poetry-core
+rust
+tree-sitter-cli
+
+# ===== DEVELOPMENT - CONTAINERS =====
+docker
+docker-buildx
+docker-compose
+
+# ===== DEVELOPMENT - TOOLS =====
+fd
+ffmpegthumbnailer
+imagemagick
+ripgrep
+
+# ===== EDITORS =====
+neovim
+omarchy-nvim
+typora
+zed
+
+# ===== DATABASE =====
+libqalculate
+libsecret
+libyaml
+postgresql
+postgresql-libs
+
+# ===== BROWSERS =====
+chromium
+zen-browser-bin
+
+# ===== COMMUNICATION =====
+discord
+signal-desktop
+thunderbird
+vesktop
+
+# ===== MEDIA =====
+gpu-screen-recorder
+imv
+kdenlive
+mpv
+obs-studio
+spotify
+vlc
+
+# ===== OFFICE & PRODUCTIVITY =====
+evince
+gnome-calculator
+gnome-disk-utility
+gnome-keyring
+libreoffice-fresh
+localsend
+obsidian
+pinta
+tobi-try
+xournalpp
+
+# ===== INPUT METHODS =====
+fcitx5
+fcitx5-gtk
+fcitx5-qt
+
+# ===== PRINTING =====
+cups
+cups-browsed
+cups-filters
+cups-pdf
+system-config-printer
+
+# ===== FIREWALL =====
+ufw
+ufw-docker
+
+# ===== NETWORK =====
+nss-mdns
+
+# ===== DISPLAY MANAGER =====
+sddm
+
+# ===== FILESYSTEM =====
+exfatprogs
+
+# ===== PACKAGE MANAGEMENT =====
+yay
+
+# ===== TERMINAL LAUNCHER =====
+omarchy-walker
+
+# ===== GAMING - NVIDIA DRIVERS =====
+lib32-nvidia-utils
+lib32-vulkan-icd-loader
+nvidia-dkms
+nvidia-settings
+nvidia-utils
+vulkan-icd-loader
+
+# ===== GAMING - PERFORMANCE =====
+gamemode
+gamescope
+mangohud
+

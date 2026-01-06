@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Exit early if we don't have the tte show
+if ! command -v tte &>/dev/null; then
+  exit 1
+fi
+
+# Exit early if screensave is already running
+pgrep -f org.karamel.screensaver && exit 0
+
+# Allow screensaver to be turned off but also force started
+if [[ -f ~/.local/state/karamel/toggles/screensaver-off ]] && [[ $1 != "force" ]]; then
+  exit 1
+fi
+
+# Silently quit Walker on overlay
+walker -q
+
+# Get focused output from Niri
+focused=$(niri msg -j outputs | jq -r '.[] | select(.is_focused == true) | .name')
+terminal=$(xdg-terminal-exec --print-id)
+
+# Launch screensaver on each output
+for m in $(niri msg -j outputs | jq -r '.[].name'); do
+  # Focus the output
+  niri msg action focus-monitor --output "$m" 2>/dev/null || true
+
+  case $terminal in
+  *Alacritty*)
+    uwsm-app -- alacritty --class=org.karamel.screensaver \
+      --config-file ~/.local/share/karamel/default/alacritty/screensaver.toml \
+      -e karamel-cmd-screensaver &
+    ;;
+  *ghostty*)
+    uwsm-app -- ghostty --class=org.karamel.screensaver \
+      --config-file=~/.local/share/karamel/default/ghostty/screensaver \
+      --font-size=18 \
+      -e karamel-cmd-screensaver &
+    ;;
+  *kitty*)
+    uwsm-app -- kitty --class=org.karamel.screensaver \
+      --override font_size=18 \
+      --override window_padding_width=0 \
+      -e karamel-cmd-screensaver &
+    ;;
+  *)
+    notify-send "Screensaver only runs in Alacritty, Ghostty, or Kitty"
+    ;;
+  esac
+done
+
+# Return focus to original output
+niri msg action focus-monitor --output "$focused" 2>/dev/null || true

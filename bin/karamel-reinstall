@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+if [ "$EUID" -eq 0 ]; then
+  echo "Error: This script should not be run as root"
+  exit 1
+fi
+
+echo -e "This will reinstall all the default Karamel packages and reset all default configs.\nWarning: All changes to configs will be lost.\n"
+
+if gum confirm "Are you sure you want to reinstall and lose all config changes?"; then
+  echo "Resetting Karamel repository"
+  git clone "https://github.com/gaspard-lonchampt/Karamel.git" ~/.local/share/karamel-new >/dev/null
+  rm -rf $KARAMEL_PATH
+  mv ~/.local/share/karamel-new $KARAMEL_PATH
+
+  echo "Reinstalling missing Karamel packages"
+  mapfile -t packages < <(grep -v '^#' "$KARAMEL_PATH/install/karamel-base.packages" | grep -v '^$')
+  sudo pacman -Syu --noconfirm --needed "${packages[@]}"
+
+  echo "Resetting all Karamel configs"
+  cp -R ~/.local/share/karamel/config/* ~/.config/
+  cp ~/.local/share/karamel/default/bashrc ~/.bashrc
+  echo '[[ -f ~/.bashrc ]] && . ~/.bashrc' | tee ~/.bash_profile >/dev/null
+
+  $(bash $KARAMEL_PATH/install/config/theme.sh)
+  $(bash $KARAMEL_PATH/install/config/git.sh)
+
+  karamel-refresh-limine
+  karamel-refresh-plymouth
+  karamel-nvim-setup
+fi

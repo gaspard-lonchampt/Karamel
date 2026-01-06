@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cmd="$*"
+exec setsid uwsm-app -- xdg-terminal-exec --app-id=org.karamel.terminal --title=Karamel -e bash -c "karamel-show-logo; $cmd; karamel-show-done"

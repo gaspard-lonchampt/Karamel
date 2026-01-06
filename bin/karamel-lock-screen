@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Lock the screen with swaylock
+pidof swaylock || swaylock &
+
+# Ensure bitwarden is locked
+if pgrep -x "bitwarden" >/dev/null; then
+  # Bitwarden auto-locks based on settings, but we can send SIGHUP
+  pkill -SIGHUP bitwarden 2>/dev/null || true
+fi
+
+# Avoid running screensaver when locked
+pkill -f org.karamel.screensaver

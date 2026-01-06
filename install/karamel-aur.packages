@@ -1,0 +1,25 @@
+# Karamel AUR packages installed via install/packaging/aur.sh
+# These packages are not available in official repos or Omarchy repo
+# They are installed with yay after base installation
+
+# ===== COMMUNICATION =====
+whatsapp-for-linux
+
+# ===== PRODUCTIVITY =====
+standard-notes-bin
+
+# ===== WAYLAND TOOLS =====
+wl-color-picker
+
+# ===== GAMING - STEAM & PROTON =====
+steam
+steam-native-runtime
+proton-ge-custom-bin
+protonup-qt
+
+# ===== GAMING - PERFORMANCE =====
+lib32-gamemode
+lib32-mangohud
+
+# ===== GAMING - CONTROLLERS =====
+xpadneo-dkms

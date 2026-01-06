@@ -1,0 +1,7 @@
+// everforest theme for Niri
+layout {
+    focus-ring {
+        active-color "#d3c6aa"
+        inactive-color "#414868"
+    }
+}

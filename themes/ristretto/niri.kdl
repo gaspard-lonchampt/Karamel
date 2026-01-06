@@ -1,0 +1,7 @@
+// ristretto theme for Niri
+layout {
+    focus-ring {
+        active-color "#e6d9db"
+        inactive-color "#414868"
+    }
+}

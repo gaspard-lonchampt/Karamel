@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Close all windows in Niri
+niri msg -j windows | jq -r '.[].id' | while read -r id; do
+  niri msg action close-window --id "$id" 2>/dev/null || true
+done
+
+# Focus first workspace
+niri msg action focus-workspace 1

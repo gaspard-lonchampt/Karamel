@@ -1,0 +1,7 @@
+// matte-black theme for Niri
+layout {
+    focus-ring {
+        active-color "#8A8A8D"
+        inactive-color "#414868"
+    }
+}

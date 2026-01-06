@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Toggle workspace gaps in Niri
+# Note: Niri doesn't support dynamic gap changes via niri msg
+# Gaps are configured in the config file and require a config reload
+
+notify-send "Niri" "Gap toggling not supported dynamically. Edit ~/.config/niri/config.kdl to change gaps."

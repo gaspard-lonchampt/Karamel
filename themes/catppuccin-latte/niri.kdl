@@ -1,0 +1,7 @@
+// catppuccin-latte theme for Niri
+layout {
+    focus-ring {
+        active-color "#1e66f5"
+        inactive-color "#414868"
+    }
+}

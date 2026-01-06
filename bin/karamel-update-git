@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+echo -e "\e[32mUpdate Karamel\e[0m"
+
+git -C $KARAMEL_PATH pull --autostash
+git -C $KARAMEL_PATH diff --check || git -C $KARAMEL_PATH reset --merge

@@ -65,6 +65,10 @@ applications:
 monitors:
   note: "Using native compositor configs (DMS display settings disabled due to positioning bug)"
   current_layout: "DP-3 left at 144Hz, eDP-1 right at 165Hz, vertically centered"
+  gui_tool:
+    package: wdisplays
+    alias: kdisplay
+    note: "GUI pour configurer les écrans (étendre, dupliquer, désactiver)"
   niri:
     config: ~/.config/niri/outputs.kdl
     dms_disabled: true  # dms/outputs.kdl include commented in config.kdl
@@ -475,7 +479,7 @@ packages:
     diff: "aconfmgr diff"
   config_files:
     - 10-base.sh          # Base system (kernel, firmware, etc.)
-    - 20-desktop.sh       # Wayland compositors, greeter, Wayland tools
+    - 20-desktop.sh       # Wayland compositors, greeter, Wayland tools, display management (wdisplays)
     - 30-audio-bluetooth.sh # PipeWire audio, Bluetooth, network
     - 35-power.sh         # Power management (fw-ectool, auto-cpufreq)
     - 40-terminal-shell.sh  # Terminal, shell, editors, launchers

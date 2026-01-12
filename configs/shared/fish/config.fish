@@ -21,6 +21,9 @@ alias hx helix
 # Claude Code alias
 alias cc claude
 
+# Display configuration alias
+alias kdisplay wdisplays
+
 # Configure sudo askpass helper
 set -gx SUDO_ASKPASS $HOME/.askpass.sh
 

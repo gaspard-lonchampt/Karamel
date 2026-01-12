@@ -199,6 +199,38 @@ generate_txt() {
                     -e 's/XF86Display/Fn+F9/g' \
                     -e 's/XF86AudioMicMute/Fn+MicMute/g' \
                 )
+                # Convert special keys to readable format
+                line=$(echo "$line" | sed \
+                    -e 's/Parenleft/(/g' \
+                    -e 's/Parenright/)/g' \
+                    -e 's/Minus/-/g' \
+                    -e 's/Equal/=/g' \
+                    -e 's/Comma/,/g' \
+                    -e 's/Period/./g' \
+                )
+                # Convert numpad keys (KP_End etc for niri, KP_1 for hyprland)
+                line=$(echo "$line" | sed \
+                    -e 's/KP_End/Num1/g' \
+                    -e 's/KP_Down/Num2/g' \
+                    -e 's/KP_Next/Num3/g' \
+                    -e 's/KP_Left/Num4/g' \
+                    -e 's/KP_Begin/Num5/g' \
+                    -e 's/KP_Right/Num6/g' \
+                    -e 's/KP_Home/Num7/g' \
+                    -e 's/KP_Up/Num8/g' \
+                    -e 's/KP_Prior/Num9/g' \
+                    -e 's/KP_Insert/Num0/g' \
+                    -e 's/KP_1/Num1/g' \
+                    -e 's/KP_2/Num2/g' \
+                    -e 's/KP_3/Num3/g' \
+                    -e 's/KP_4/Num4/g' \
+                    -e 's/KP_5/Num5/g' \
+                    -e 's/KP_6/Num6/g' \
+                    -e 's/KP_7/Num7/g' \
+                    -e 's/KP_8/Num8/g' \
+                    -e 's/KP_9/Num9/g' \
+                    -e 's/KP_0/Num0/g' \
+                )
                 echo "$line"
             fi
         done > "$OUTPUT_TXT"

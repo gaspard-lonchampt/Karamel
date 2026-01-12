@@ -130,6 +130,16 @@ After first boot, customize your accent color via DMS:
 - `Ctrl + Alt + L` - Lock screen
 - `Super + Ctrl + Up or Down` - Move relative workspaces
 
+#### Kitty Terminal (prefix: Ctrl+Space)
+- `Ctrl+Space` then `i` - Split vertical
+- `Ctrl+Space` then `u` - Split horizontal
+- `Ctrl+Space` then `h/j/k/l` - Navigate splits (vim-style)
+- `Ctrl+Space` then `r` - Resize mode (arrow keys)
+- `Ctrl+Space` then `q` - Close split
+- `Ctrl+Shift+t` - New tab
+- `Ctrl+Shift+←/→` - Switch tabs
+- `Ctrl+Shift+Page Up/Down` - Scroll by page
+
 #### Media Keys
 - `XF86AudioRaiseVolume` - Volume up
 - `XF86AudioLowerVolume` - Volume down

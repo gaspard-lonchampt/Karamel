@@ -132,6 +132,18 @@ parse_niri() {
     echo "$json" > "$OUTPUT_JSON"
 }
 
+parse_kitty() {
+    local config="${1:-$HOME/.config/kitty/kitty.conf}"
+    [[ ! -f "$config" ]] && return
+
+    echo "󰄛 ─────────────── KITTY TERMINAL ─────────────── 󰄛"
+    grep -E "^map.+#" "$config" | while read -r line; do
+        key=$(echo "$line" | awk '{print $2}' | sed 's/+/ + /g')
+        desc=$(echo "$line" | sed 's/.*# *//')
+        echo "  $key → $desc"
+    done
+}
+
 generate_txt() {
     # Generate human-readable text file for Walker
     if [[ ! -f "$OUTPUT_JSON" ]]; then
@@ -238,6 +250,9 @@ generate_txt() {
         # Simple fallback
         cat "$OUTPUT_JSON" > "$OUTPUT_TXT"
     fi
+
+    # Append app-specific keybindings
+    parse_kitty >> "$OUTPUT_TXT"
 }
 
 reload_compositor() {

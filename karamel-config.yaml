@@ -6,7 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-12"
-  version: "1.0.0"
+  version: "1.1.0"
 
 colors:
   catppuccin:
@@ -35,6 +35,10 @@ compositors:
 applications:
   fish:
     config: configs/shared/fish/config.fish
+    functions:
+      - kpower: "Power management status/control"
+      - kreload: "Reload compositor + regenerate keybinds"
+      - kbinds: "Display keybinds (terminal or Walker)"
   kitty:
     config: configs/shared/kitty/kitty.conf
   fastfetch:
@@ -52,6 +56,8 @@ gtk:
 
 scripts:
   keybinds_menu: scripts/keybinds.sh
+  keybinds_parser: scripts/karamel-keybinds.sh
+  power_manager: scripts/karamel-power.sh
   screenshot: scripts/screenshot.sh
   installer: install.sh
   verifier: verify-install.sh
@@ -146,8 +152,20 @@ keybindings:
     niri: configs/niri/niri/binds.kdl
   walker_menu:
     key: "Super + :"
-    script: ~/.config/karamel/scripts/keybinds.sh
-    note: "Parse les configs et affiche par catégorie dans Walker"
+    script: ~/Karamel/scripts/keybinds.sh
+    parser: ~/Karamel/scripts/karamel-keybinds.sh
+    output: ~/.config/karamel/keybinds.txt
+    features:
+      - "Détection auto du compositeur (niri/hyprland)"
+      - "Niri: parse binds.kdl (hotkey-overlay-title)"
+      - "Hyprland: utilise hyprctl binds -j (natif)"
+      - "Icônes Nerd Font par catégorie"
+      - "Conversion touches XF86 → Fn+F1-F9"
+    fish_commands:
+      kreload: "Reload config + régénère keybinds"
+      kbinds: "Affiche keybinds dans terminal"
+      kbinds -w: "Ouvre keybinds dans Walker"
+    note: "Parser dynamique - exécuter kreload après modification des configs"
   lock_screen:
     key: "Ctrl + Alt + L"
     command: "loginctl lock-session"

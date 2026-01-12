@@ -321,3 +321,5 @@ include "windowrules.kdl"
 include "binds.kdl"
 include "outputs.kdl"
 include "startup.kdl"
+
+// include "dms/outputs.kdl"  // Disabled - using outputs.kdl instead (DMS overwrites this file)

@@ -50,6 +50,20 @@ applications:
   dms:
     settings: configs/shared/DankMaterialShell/settings.json
 
+monitors:
+  note: "Using native compositor configs (DMS display settings disabled due to positioning bug)"
+  current_layout: "DP-3 left at 144Hz, eDP-1 right at 165Hz, vertically centered"
+  niri:
+    config: ~/.config/niri/outputs.kdl
+    dms_disabled: true  # dms/outputs.kdl include commented in config.kdl
+  hyprland:
+    config: ~/.config/hypr/monitors.conf
+  position_examples:
+    left: "DP-3 x=0, eDP-1 x=2560"
+    right: "eDP-1 x=0, DP-3 x=1707"
+    above: "DP-3 y=0, eDP-1 y=1440"
+    below: "eDP-1 y=0, DP-3 y=1067"
+
 gtk:
   gtk3: configs/shared/gtk-3.0/
   gtk4: configs/shared/gtk-4.0/

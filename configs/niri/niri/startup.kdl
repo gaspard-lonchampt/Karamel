@@ -1,5 +1,6 @@
 // Start up Commands
 
+spawn-at-startup "xwayland-satellite"
 spawn-at-startup "dms" "run"
 // spawn-at-startup "qs" "-c" "noctalia-shell"
 spawn-at-startup "sunshine"

@@ -14,6 +14,7 @@ environment {
     TERMINAL "kitty"
     XCURSOR_THEME "Bibata-Modern-Ice"
     XCURSOR_SIZE "24"
+    DISPLAY ":0"
 }
 
 // Input device configuration.

@@ -406,6 +406,52 @@ gpu:
     Required for Zed editor and other Vulkan applications.
     Added: 2026-01-12
 
+gaming:
+  steam:
+    package: steam
+    proton_versions:
+      - "Proton Experimental"  # Pour DLSS/RTX (Cyberpunk 2077)
+      - "GE-Proton"            # Pour jeux problématiques (Bannerlord)
+    proton_ge_manager: protonup-qt
+    launch_options:
+      default: "gamemoderun %command%"
+      with_overlay: "gamemoderun mangohud %command%"
+      with_gamescope: "gamescope -W 2560 -H 1440 -f -- gamemoderun %command%"
+  packages:
+    - steam                    # Client Steam
+    - lib32-nvidia-utils       # Drivers NVIDIA 32-bit
+    - lib32-vulkan-icd-loader  # Vulkan 32-bit
+    - vulkan-tools             # Outils diagnostic Vulkan
+    - gamemode                 # Optimisations gaming Feral
+    - lib32-gamemode           # GameMode 32-bit
+    - gamescope                # Microcompositeur Valve
+    - mangohud                 # Overlay performance
+    - lib32-mangohud           # MangoHud 32-bit
+    - protonup-qt              # Gestionnaire Proton-GE (AUR)
+    - protontricks             # Dépendances Windows (AUR)
+  games:
+    bannerlord:
+      app_id: 261550
+      proton: "GE-Proton"
+      protontricks: "dotnet472 dotnet48 dotnet6"
+      protondb: "Gold"
+    cyberpunk_2077:
+      app_id: 1091500
+      proton: "Proton Experimental"
+      protondb: "Platinum"
+      note: "DLSS et RTX fonctionnent nativement"
+  xwayland:
+    package: xwayland-satellite
+    display: ":0"
+    startup: "spawn-at-startup in ~/.config/niri/startup.kdl"
+    env: "DISPLAY=:0 in ~/.config/niri/config.kdl"
+    note: "Requis pour Steam sur Niri (compositeur Wayland sans XWayland natif)"
+  note: |
+    Steam gaming configuré le 2026-01-12.
+    Multilib activé dans /etc/pacman.conf.
+    Utilisateur ajouté au groupe gamemode.
+    xwayland-satellite ajouté pour support X11 sur Niri.
+
 dms_customizations:
   settings_file: ~/.config/DankMaterialShell/settings.json
   system_monitor:
@@ -436,6 +482,7 @@ packages:
     - 50-themes.sh        # GTK/Qt themes, cursor, icons, fonts
     - 60-dev.sh           # Development tools, AUR helpers
     - 70-apps.sh          # Applications (browser, messaging)
+    - 75-gaming.sh        # Steam, Proton, gamemode, gamescope, mangohud
     - 90-temporaire.sh    # Temporary packages (to clean up)
     - 99-files.sh         # Modified system files + IgnorePaths
   workflow:

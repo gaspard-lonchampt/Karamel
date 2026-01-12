@@ -255,7 +255,7 @@
   "customPowerActionPowerOff": "",
   "updaterHideWidget": false,
   "updaterUseCustomCommand": true,
-  "updaterCustomCommand": "kitty dcli update",
+  "updaterCustomCommand": "kitty -e yay -Syu",
   "updaterTerminalAdditionalParams": "",
   "displayNameMode": "system",
   "screenPreferences": {

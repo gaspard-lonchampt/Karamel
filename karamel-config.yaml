@@ -83,7 +83,6 @@ installer_libs:
   dotfiles: lib/dotfiles.sh
   themes: lib/themes.sh
   greeter: lib/greeter.sh
-  dcli: lib/dcli.sh
   plymouth: lib/plymouth.sh
 
 plymouth:
@@ -208,11 +207,6 @@ keybindings:
       screen: "Ctrl + Print"
       copy: "Super + Shift + S"
     note: "Script universel pour Hyprland & niri avec annotation satty"
-  apps_removed:
-    - "Signal (non installé)"
-    - "Obsidian (non installé)"
-    - "lightworks (non installé)"
-    - "swaylock (remplacé par DMS lock)"
   azerty_adaptations:
     note: "Keybindings adaptés pour clavier AZERTY français"
     mappings:
@@ -238,10 +232,11 @@ keybindings:
 audio:
   backend: pipewire
   packages:
-    - pipewire
-    - pipewire-pulse
-    - pipewire-alsa
-    - wireplumber
+    - pipewire          # Base audio daemon (dependency)
+    - pipewire-pulse    # PulseAudio replacement
+    - wireplumber       # Session manager
+    - pavucontrol       # Volume control
+    - playerctl         # Media keys
   services:
     - pipewire.service (user)
     - pipewire-pulse.service (user)
@@ -271,11 +266,10 @@ bluetooth:
   packages:
     - bluez
     - bluez-utils
-    - linux-firmware
   service: bluetooth.service
   enable_command: "sudo systemctl enable --now bluetooth"
   cli_tool: bluetoothctl
-  gui_tool: blueman (bug Python 3.14 en cours)
+  gui_tool: "DMS Control Center"
   pairing_commands:
     - "power on"
     - "scan on"
@@ -292,7 +286,6 @@ power_management:
   packages:
     - fw-ectool-git  # AUR - Framework EC control
     - auto-cpufreq   # CPU frequency management on battery
-    - libnotify      # Notifications
   files:
     fish_function: ~/.config/fish/functions/kpower.fish
     daemon_script: ~/Karamel/scripts/karamel-power-daemon.sh

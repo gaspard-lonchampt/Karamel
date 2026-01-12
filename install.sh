@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# BD-Configs Installer
-# Beautiful Dots for Hyprland & Niri with DankMaterialShell
+# Karamel Installer
+# Desktop environment for Hyprland & Niri with DankMaterialShell
 
 set -euo pipefail
 
@@ -14,13 +14,11 @@ source "$REPO_DIR/lib/packages.sh"
 source "$REPO_DIR/lib/dotfiles.sh"
 source "$REPO_DIR/lib/themes.sh"
 source "$REPO_DIR/lib/greeter.sh"
-source "$REPO_DIR/lib/dcli.sh"
 source "$REPO_DIR/lib/plymouth.sh"
 
 # Installation state variables
 INSTALL_HYPRLAND=false
 INSTALL_NIRI=false
-INSTALL_DCLI=false
 INSTALL_PLYMOUTH=false
 OPTIONAL_APPS=()
 
@@ -29,7 +27,7 @@ show_welcome() {
     print_banner
 
     cat << 'EOF'
-This installer will set up Beautiful Dots configurations for:
+This installer will set up Karamel desktop environment for:
   • Hyprland - Dynamic tiling Wayland compositor
   • Niri - Scrollable-tiling Wayland compositor
   • DankMaterialShell (DMS) - Modern shell with Material Design
@@ -131,19 +129,6 @@ select_optional_apps() {
     echo ""
 }
 
-# Ask user if they want dcli integration
-select_dcli() {
-    clear
-    if prompt_dcli_installation; then
-        INSTALL_DCLI=true
-        log_info "dcli will be installed and configured"
-    else
-        INSTALL_DCLI=false
-        log_info "Skipping dcli installation"
-    fi
-    echo ""
-}
-
 # Ask user if they want Plymouth boot theme
 select_plymouth() {
     log_step "Plymouth Boot Theme"
@@ -212,15 +197,7 @@ post_install() {
     echo "  Edit files in the repo and changes will apply immediately"
     echo ""
 
-    if [ "$INSTALL_DCLI" = true ]; then
-        echo -e "${CYAN}dcli Configuration:${NC}"
-        echo "  dcli config location: ~/.config/arch-config"
-        echo "  Run 'dcli status' to view your configuration"
-        echo "  Run 'dcli repo init' to set up git tracking (recommended)"
-        echo ""
-    fi
-
-    echo -e "${YELLOW}Tip:${NC} Keep the karamel directory to easily update configs!"
+    echo -e "${YELLOW}Tip:${NC} Keep the Karamel directory to easily update configs!"
     echo ""
     print_separator
     echo ""
@@ -245,7 +222,6 @@ main() {
     # User selections
     select_compositors
     select_optional_apps
-    select_dcli
     select_plymouth
 
     # Confirm backup
@@ -270,11 +246,6 @@ main() {
 
     # Setup greeter
     setup_greeter "$INSTALL_HYPRLAND" "$INSTALL_NIRI" || die "Failed to setup greeter"
-
-    # Setup dcli if selected
-    if [ "$INSTALL_DCLI" = true ]; then
-        setup_dcli "$(detect_user)" "$REPO_DIR" "$INSTALL_HYPRLAND" "$INSTALL_NIRI" "${OPTIONAL_APPS[@]}" || log_warn "dcli setup failed, but continuing with installation"
-    fi
 
     # Setup Plymouth boot theme if selected
     if [ "$INSTALL_PLYMOUTH" = true ]; then

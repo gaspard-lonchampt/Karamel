@@ -18,7 +18,7 @@ A complete, ready-to-use desktop environment configuration for Arch Linux featur
 - **Walker Keybindings Menu**: Search all keybindings with `Super + :`
 - **Curated Applications**: kitty terminal, fish shell, nemo file manager, and optional apps
 - **Symlinked Configs**: Easy to update - edit files in the repo and changes apply immediately
-- **Optional dcli Integration**: Declarative package management for tracking your system configuration in YAML and git
+- **aconfmgr Integration**: Declarative package management for tracking your system configuration
 
 ## Screenshots
 
@@ -45,46 +45,56 @@ The installer will guide you through:
 1. System compatibility checks
 2. Compositor selection (Hyprland, Niri, or both)
 3. Optional application selection
-4. dcli integration (optional)
-5. Plymouth boot theme (optional)
-6. Package installation
-7. Configuration deployment
-8. Theme application
-9. Display manager setup
-10. Plymouth theme installation (if selected)
+4. Plymouth boot theme (optional)
+5. Package installation
+6. Configuration deployment
+7. Theme application
+8. Display manager setup
+9. Plymouth theme installation (if selected)
 
 ### What Gets Installed
 
-**Core Packages:**
+**Base System:**
+- Linux kernel, firmware, AMD microcode
 - Build tools (git, cmake, meson, gcc, base-devel)
-- jq and dialog for the installer
+- LVM2 for LUKS encryption support
 
-**Compositor Packages:**
-- Hyprland: hyprland, hypridle, xdg-desktop-portals, screenshot tools, pyprland
-- Niri: niri, waybar, mako, fuzzel, swayidle, screenshot tools
+**Wayland Desktop:**
+- Hyprland & Niri compositors
+- DankMaterialShell (dms-shell-git) + Quickshell
+- XDG desktop portals
+- Screenshot tools (grim, slurp, satty)
+- Clipboard management (wl-clipboard, cliphist)
+- Plymouth boot splash
+
+**Audio & Connectivity:**
+- PipeWire audio (pipewire-pulse, wireplumber)
+- Bluetooth (bluez, bluez-utils)
+- NetworkManager
+
+**Power Management (Framework 16):**
+- fw-ectool-git (battery sustainer control)
+- auto-cpufreq (CPU frequency management)
 
 **Theme Packages:**
 - Catppuccin GTK theme (Mocha variant)
-- Yaru-sage icon theme (green)
-- Bibata Modern Ice cursor theme
-- Qt5/Qt6 Wayland support and theming
-- Kvantum theme engine
+- Yaru-sage icon theme
+- Bibata Modern Ice cursor
+- Qt5/Qt6 Wayland support + Kvantum
+- Nerd Fonts (FiraCode, symbols)
 
-**DMS & Display Manager:**
-- DankMaterialShell (dms-shell-git)
-- Quickshell (DMS dependency)
-- greetd + greetd-dms-greeter-git
-
-**Required Applications:**
-- kitty (terminal)
+**Terminal & Editors:**
+- kitty (terminal emulator)
 - fish (shell)
-- nemo (file manager)
-- fastfetch (system info with Karamel cat ASCII art)
+- helix, zed, vim (editors)
+- walker (application launcher)
+- yazi (terminal file manager)
 
-**Optional Applications:**
-- Zen Browser (privacy-focused browser)
-- Zed (modern code editor)
-- Helix (modal text editor)
+**Applications:**
+- nemo (file manager)
+- fastfetch (system info)
+- zen-browser-bin (optional)
+- whatsapp-for-linux-git (optional)
 
 ## Post-Installation
 
@@ -117,7 +127,7 @@ After first boot, customize your accent color via DMS:
 - `Super + B` - Browser (if installed)
 - `Super + :` - Keybindings menu (Walker)
 - `Super + Shift + R` - Reload compositor config
-- `Super + Alt + L` - Lock screen
+- `Ctrl + Alt + L` - Lock screen
 - `Super + Ctrl + Up or Down` - Move relative workspaces
 
 #### Media Keys
@@ -170,73 +180,109 @@ sudo pacman -S plymouth
 # Example: HOOKS=(base udev plymouth autodetect modconf ...)
 ```
 
-## dcli Integration (Optional)
+## Package Management with aconfmgr
 
-Karamel-Config supports optional integration with **dcli** - a declarative package management tool for Arch Linux inspired by NixOS.
+Karamel uses **aconfmgr** for declarative package management. All packages are organized in `~/.config/aconfmgr/` with categorized `.sh` files.
 
-### What is dcli?
+### Package Categories
 
-dcli allows you to:
-- Manage all your packages in YAML configuration files
-- Track your entire system configuration in git
-- Sync your setup across multiple machines
-- Organize packages into reusable modules
-- Declaratively manage systemd services
+| File | Description |
+|------|-------------|
+| `10-base.sh` | Base system (kernel, firmware, lvm2) |
+| `20-desktop.sh` | Wayland compositors (Hyprland, Niri, DMS, XDG portals) |
+| `30-audio-bluetooth.sh` | PipeWire audio, Bluetooth, NetworkManager |
+| `35-power.sh` | Power management (fw-ectool, auto-cpufreq) |
+| `40-terminal-shell.sh` | Terminal (kitty, fish, helix, zed, walker) |
+| `50-themes.sh` | GTK/Qt themes, fonts, cursors, icons |
+| `60-dev.sh` | Development tools (git, cmake, yay) |
+| `70-apps.sh` | Applications (zen-browser, fastfetch) |
+| `90-temporaire.sh` | Temporary packages |
 
-### What happens when you enable dcli?
-
-If you choose to install dcli during setup, the installer will:
-1. Install `dcli-arch-git` from AUR
-2. Create a dcli configuration structure at `~/.config/arch-config`
-3. Generate modules for all Karamel packages:
-   - `base` - Core dependencies
-   - `themes` - Catppuccin Mocha + Yaru-sage theme packages
-   - `dms` - DankMaterialShell packages
-   - `apps` - Terminal, file manager, shell
-   - `hyprland` - Hyprland compositor (if selected)
-   - `niri` - Niri compositor (if selected)
-4. Create a host configuration file with all installed packages declared
-
-### Using dcli after installation
+### Using aconfmgr
 
 ```bash
-# View your current configuration
-dcli status
+# See what packages would be installed/removed
+aconfmgr diff
 
-# Sync packages (install missing, optionally remove extras)
-dcli sync
+# Apply configuration (install/remove packages)
+aconfmgr apply
 
-# List all modules
-dcli module list
-
-# Enable/disable modules
-dcli module enable gaming
-dcli module disable development
-
-# Search and install packages
-dcli search
-dcli install firefox
-
-# Set up git tracking (recommended for multi-machine setups)
-dcli repo init
-
-# Edit configurations
-dcli edit
+# Save current system state to config
+aconfmgr save
 ```
 
-### Multi-machine setup with dcli
+### Adding New Packages
+
+1. Install the package: `yay -S package-name`
+2. Add to the appropriate `.sh` file:
+   ```bash
+   AddPackage package-name  # Description
+   # or for AUR packages:
+   AddPackage --foreign package-name  # Description
+   ```
+3. Run `aconfmgr apply` to verify
+
+### Fish Shell Integration
+
+The fish config includes helpful reminders when using `pacman` or `yay`:
+- Reminds you to add packages to aconfmgr
+- Shows which file to edit based on package category
+
+## Power Management (Framework 16)
+
+Karamel includes power management optimized for Framework Laptop 16.
+
+### kpower Command
 
 ```bash
-# On your first machine
-dcli repo init              # Initialize git repository
-dcli repo push              # Push to your git remote
-
-# On additional machines
-dcli repo clone             # Clone your configuration
-dcli sync                   # Install all packages from config
+kpower status    # Show current battery, profile, and sustainer status
+kpower chill     # 40-60% battery, low-power profile
+kpower notso     # 60-80% battery, balanced profile
+kpower furious   # 0-100% battery, performance profile
 ```
 
-For more information, visit the [dcli repository](https://gitlab.com/theblackdon/dcli-arch).
+### Power Modes
+
+| Mode | Battery Range | CPU Profile | Use Case |
+|------|---------------|-------------|----------|
+| `chill` | 40-60% | low-power | Battery longevity, light tasks |
+| `notso` | 60-80% | balanced | Daily use, moderate workloads |
+| `furious` | 0-100% | performance | Gaming, heavy compilation |
+
+### Auto-Switch Daemon
+
+The `karamel-power.service` automatically switches modes based on CPU/GPU load when on AC power:
+- Load < 30% → chill
+- Load 30-70% → notso
+- Load > 70% → furious
+
+```bash
+# Enable the daemon
+systemctl --user enable --now karamel-power
+
+# Check status
+systemctl --user status karamel-power
+```
+
+## Fish Shell Functions
+
+### Karamel Functions
+
+| Function | Description |
+|----------|-------------|
+| `kpower` | Power management (see above) |
+| `kreload` | Reload compositor config and regenerate keybinds |
+| `kbinds` | Show keybinds in terminal |
+| `kbinds -w` | Show keybinds in Walker launcher |
+
+### File Navigation (fzf)
+
+| Function | Description |
+|----------|-------------|
+| `ffcd` | Fuzzy find and cd to directory |
+| `ffch` | Fuzzy search command history |
+| `ffe` | Find file and open in editor |
+| `ffec` | Search file contents and open |
 
 ## Customization
 
@@ -356,19 +402,30 @@ sudo pacman -R hyprland niri dms-shell-git greetd-dms-greeter-git
 ## Directory Structure
 
 ```
-karamel-config/
+Karamel/
 ├── install.sh              # Main installer script
 ├── verify-install.sh       # Post-installation verification
 ├── README.md               # This file
+├── karamel-config.yaml     # Configuration manifest
 ├── lib/                    # Installer library functions
 │   ├── utils.sh           # Utility functions
 │   ├── checks.sh          # System checks
-│   ├── packages.sh        # Package installation
+│   ├── packages.sh        # Package installation (aconfmgr format)
 │   ├── dotfiles.sh        # Config deployment
 │   ├── themes.sh          # Theme application
 │   ├── greeter.sh         # Display manager setup
-│   ├── dcli.sh            # dcli integration
 │   └── plymouth.sh        # Plymouth boot theme setup
+├── packages/               # Package definitions (aconfmgr format)
+│   └── aconfmgr/          # Categorized package files
+│       ├── 10-base.sh
+│       ├── 20-desktop.sh
+│       ├── 30-audio-bluetooth.sh
+│       ├── 35-power.sh
+│       ├── 40-terminal-shell.sh
+│       ├── 50-themes.sh
+│       ├── 60-dev.sh
+│       ├── 70-apps.sh
+│       └── 90-temporaire.sh
 ├── configs/               # Configuration files
 │   ├── shared/            # Shared between compositors
 │   │   ├── fish/          # Fish shell config
@@ -381,8 +438,10 @@ karamel-config/
 │   └── niri/              # Niri-specific
 │       └── niri/          # Niri config files
 ├── scripts/               # Helper scripts
-│   └── keybinds.sh        # Walker keybindings menu
-├── packages/              # Package lists
+│   ├── keybinds.sh        # Walker keybindings menu
+│   ├── karamel-keybinds.sh # Keybinds parser
+│   ├── karamel-power-daemon.sh # Auto-switch power daemon
+│   └── screenshot.sh      # Screenshot utility
 └── assets/                # Wallpapers, Karamel branding
     ├── karamel-cat.txt    # ASCII art for fastfetch
     ├── karamel-logo.png   # Pixel art cat for launcher

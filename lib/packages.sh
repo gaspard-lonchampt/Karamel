@@ -1,12 +1,33 @@
 #!/usr/bin/env bash
-# Package installation functions for karamel installer
+# Package installation functions for Karamel installer
+# Supports aconfmgr .sh format (AddPackage lines)
 
 # Source utils for logging
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/utils.sh"
 
-# Install packages from a list file
-install_package_list() {
+# Parse aconfmgr .sh file and extract package names
+# Format: AddPackage [--foreign] package_name # comment
+parse_aconfmgr_packages() {
+    local package_file="$1"
+    local packages=()
+
+    while IFS= read -r line; do
+        # Skip empty lines and comments
+        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+
+        # Match AddPackage lines (with or without --foreign)
+        if [[ "$line" =~ ^[[:space:]]*AddPackage[[:space:]]+(--foreign[[:space:]]+)?([^[:space:]#]+) ]]; then
+            local pkg="${BASH_REMATCH[2]}"
+            packages+=("$pkg")
+        fi
+    done < "$package_file"
+
+    echo "${packages[@]}"
+}
+
+# Install packages from an aconfmgr .sh file
+install_aconfmgr_list() {
     local package_file="$1"
     local description="$2"
 
@@ -23,18 +44,17 @@ install_package_list() {
 
     log_info "Installing $description..."
 
-    # Read packages from file, skip empty lines and comments
-    local packages=()
-    while IFS= read -r line; do
-        # Skip empty lines and comments
-        [[ -z "$line" || "$line" =~ ^# ]] && continue
-        packages+=("$line")
-    done < "$package_file"
+    # Parse packages from aconfmgr format
+    local packages_str
+    packages_str=$(parse_aconfmgr_packages "$package_file")
 
-    if [ ${#packages[@]} -eq 0 ]; then
+    if [ -z "$packages_str" ]; then
         log_warn "No packages found in $package_file"
         return 0
     fi
+
+    # Convert to array
+    read -ra packages <<< "$packages_str"
 
     local official_packages=()
     local aur_packages=()
@@ -90,49 +110,49 @@ install_package_list() {
     return 0
 }
 
-# Install core dependencies
+# Install core dependencies (base system)
 install_core_packages() {
     local repo_dir="$1"
     log_step "Installing Core Dependencies"
-    install_package_list "$repo_dir/packages/core.txt" "Core Dependencies"
+    install_aconfmgr_list "$repo_dir/packages/aconfmgr/10-base.sh" "Base System"
+    install_aconfmgr_list "$repo_dir/packages/aconfmgr/60-dev.sh" "Development Tools"
 }
 
-# Install compositor packages
+# Install compositor packages (Wayland desktop)
 install_compositor_packages() {
     local repo_dir="$1"
     local install_hyprland="$2"
     local install_niri="$3"
 
-    log_step "Installing Compositor Packages"
+    log_step "Installing Wayland Desktop Components"
 
-    if [ "$install_hyprland" = "true" ]; then
-        install_package_list "$repo_dir/packages/hyprland.txt" "Hyprland Compositor"
-    fi
-
-    if [ "$install_niri" = "true" ]; then
-        install_package_list "$repo_dir/packages/niri.txt" "Niri Compositor"
-    fi
+    # Install common desktop packages (both compositors need these)
+    install_aconfmgr_list "$repo_dir/packages/aconfmgr/20-desktop.sh" "Wayland Desktop"
+    install_aconfmgr_list "$repo_dir/packages/aconfmgr/30-audio-bluetooth.sh" "Audio & Bluetooth"
+    install_aconfmgr_list "$repo_dir/packages/aconfmgr/35-power.sh" "Power Management"
 }
 
 # Install theme packages
 install_theme_packages() {
     local repo_dir="$1"
     log_step "Installing Theme Packages"
-    install_package_list "$repo_dir/packages/themes.txt" "Themes"
+    install_aconfmgr_list "$repo_dir/packages/aconfmgr/50-themes.sh" "Themes & Fonts"
 }
 
-# Install DMS packages
+# Install DMS packages (included in 20-desktop.sh)
 install_dms_packages() {
     local repo_dir="$1"
     log_step "Installing DankMaterialShell"
-    install_package_list "$repo_dir/packages/dms.txt" "DMS and Display Manager"
+    # DMS packages are already in 20-desktop.sh
+    log_success "DMS packages included in desktop installation"
 }
 
 # Install required apps
 install_required_apps() {
     local repo_dir="$1"
     log_step "Installing Required Applications"
-    install_package_list "$repo_dir/packages/apps-required.txt" "Required Applications"
+    install_aconfmgr_list "$repo_dir/packages/aconfmgr/40-terminal-shell.sh" "Terminal & Shell"
+    install_aconfmgr_list "$repo_dir/packages/aconfmgr/70-apps.sh" "Applications"
 }
 
 # Install optional apps

@@ -1,4 +1,0 @@
-kitty
-nemo
-fish
-fastfetch

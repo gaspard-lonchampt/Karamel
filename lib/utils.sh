@@ -117,10 +117,10 @@ print_banner() {
     cat << 'EOF'
 ╔══════════════════════════════════════════════╗
 ║                                              ║
-║           BD-CONFIGS INSTALLER               ║
+║            KARAMEL INSTALLER                 ║
 ║                                              ║
-║    Beautiful Dots for Hyprland & Niri        ║
-║         with DankMaterialShell               ║
+║     Desktop Environment for Arch Linux       ║
+║    Hyprland & Niri with DankMaterialShell    ║
 ║                                              ║
 ╚══════════════════════════════════════════════╝
 EOF

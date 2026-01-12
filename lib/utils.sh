@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Utility functions for bd-configs installer
+# Utility functions for karamel installer
 
 # Color codes
 RED='\033[0;31m'
@@ -110,7 +110,7 @@ print_separator() {
     echo -e "${PURPLE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 }
 
-# Print bd-configs banner
+# Print karamel banner
 print_banner() {
     clear
     echo -e "${PURPLE}"

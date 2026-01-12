@@ -4,7 +4,7 @@
 
 A complete, ready-to-use desktop environment configuration for Arch Linux featuring modern Wayland compositors with Catppuccin aesthetics and Karamel branding.
 
-> Fork personnalisé de [BD-Configs](https://gitlab.com/theblackdon/bd-configs) par TheBlackDon
+> Fork personnalisé de [BD-Configs](https://gitlab.com/theblackdon/karamel) par TheBlackDon
 
 ## Features
 
@@ -14,6 +14,8 @@ A complete, ready-to-use desktop environment configuration for Arch Linux featur
 - **Karamel Branding**: Custom pixel art cat logo and ASCII art for fastfetch
 - **Yaru-sage Icons**: Fresh green icon theme for a natural look
 - **DMS-Greeter**: Elegant display manager for seamless session switching
+- **Karamel Plymouth Theme**: Tiger-stripe logo boot splash
+- **Walker Keybindings Menu**: Search all keybindings with `Super + :`
 - **Curated Applications**: kitty terminal, fish shell, nemo file manager, and optional apps
 - **Symlinked Configs**: Easy to update - edit files in the repo and changes apply immediately
 - **Optional dcli Integration**: Declarative package management for tracking your system configuration in YAML and git
@@ -44,10 +46,12 @@ The installer will guide you through:
 2. Compositor selection (Hyprland, Niri, or both)
 3. Optional application selection
 4. dcli integration (optional)
-5. Package installation
-6. Configuration deployment
-7. Theme application
-8. Display manager setup
+5. Plymouth boot theme (optional)
+6. Package installation
+7. Configuration deployment
+8. Theme application
+9. Display manager setup
+10. Plymouth theme installation (if selected)
 
 ### What Gets Installed
 
@@ -111,6 +115,7 @@ After first boot, customize your accent color via DMS:
 - `Super + Q` - Close window
 - `Super + F` - File manager (nemo)
 - `Super + B` - Browser (if installed)
+- `Super + :` - Keybindings menu (Walker)
 - `Super + Shift + R` - Reload compositor config
 - `Super + Alt + L` - Lock screen
 - `Super + Ctrl + Up or Down` - Move relative workspaces
@@ -122,6 +127,48 @@ After first boot, customize your accent color via DMS:
 - `XF86MonBrightnessUp` - Brightness up
 - `XF86MonBrightnessDown` - Brightness down
 
+
+## Walker Keybindings Menu
+
+Press `Super + :` (colon) to open a searchable menu of all keybindings for your current compositor. The menu is styled with Catppuccin Mocha colors and shows keybindings in "key → action" format.
+
+The menu dynamically parses your compositor's config files:
+- Hyprland: `configs/hyprland/hypr/keybinds-*.conf`
+- Niri: `configs/niri/niri/binds.kdl`
+
+## Plymouth Boot Theme
+
+Karamel includes a custom Plymouth boot splash theme featuring the "KARAMEL" logo with tiger-stripe colors inspired by the Karamel cat mascot.
+
+### Colors
+- Orange clair/beige: `#e8c8a0`
+- Orange: `#d4a574`
+- Orange foncé: `#c87830`
+- Marron: `#8b5a2b`
+- Background: Catppuccin Mocha base `#1e1e2e`
+
+### Manual Installation
+If you didn't enable Plymouth during installation:
+```bash
+# Copy theme to system
+sudo cp -r ~/Karamel/assets/plymouth /usr/share/plymouth/themes/karamel
+
+# Set as default theme
+sudo plymouth-set-default-theme karamel
+
+# Regenerate initramfs
+sudo mkinitcpio -P
+```
+
+### Prerequisites
+Ensure Plymouth is installed and configured in mkinitcpio:
+```bash
+# Install Plymouth
+sudo pacman -S plymouth
+
+# Add 'plymouth' to HOOKS in /etc/mkinitcpio.conf
+# Example: HOOKS=(base udev plymouth autodetect modconf ...)
+```
 
 ## dcli Integration (Optional)
 
@@ -281,7 +328,7 @@ journalctl --user -xe
 fastfetch
 
 # Check if ASCII file exists
-cat ~/.config/bd-configs/assets/karamel-cat.txt
+cat ~/.config/karamel/assets/karamel-cat.txt
 ```
 
 ## Uninstallation
@@ -311,6 +358,7 @@ sudo pacman -R hyprland niri dms-shell-git greetd-dms-greeter-git
 ```
 karamel-config/
 ├── install.sh              # Main installer script
+├── verify-install.sh       # Post-installation verification
 ├── README.md               # This file
 ├── lib/                    # Installer library functions
 │   ├── utils.sh           # Utility functions
@@ -318,21 +366,37 @@ karamel-config/
 │   ├── packages.sh        # Package installation
 │   ├── dotfiles.sh        # Config deployment
 │   ├── themes.sh          # Theme application
-│   └── greeter.sh         # Display manager setup
+│   ├── greeter.sh         # Display manager setup
+│   ├── dcli.sh            # dcli integration
+│   └── plymouth.sh        # Plymouth boot theme setup
 ├── configs/               # Configuration files
 │   ├── shared/            # Shared between compositors
+│   │   ├── fish/          # Fish shell config
+│   │   ├── kitty/         # Kitty terminal config
+│   │   ├── fastfetch/     # Fastfetch with Karamel cat
+│   │   ├── walker/        # Walker launcher config
+│   │   └── DankMaterialShell/  # DMS settings
 │   ├── hyprland/          # Hyprland-specific
+│   │   └── hypr/          # Hyprland config files
 │   └── niri/              # Niri-specific
+│       └── niri/          # Niri config files
+├── scripts/               # Helper scripts
+│   └── keybinds.sh        # Walker keybindings menu
 ├── packages/              # Package lists
 └── assets/                # Wallpapers, Karamel branding
     ├── karamel-cat.txt    # ASCII art for fastfetch
-    ├── karamel-logo.png   # Pixel art for launcher
+    ├── karamel-logo.png   # Pixel art cat for launcher
+    ├── plymouth/          # Plymouth boot theme
+    │   ├── karamel.plymouth
+    │   ├── karamel.script
+    │   ├── logo.png       # Tiger-stripe KARAMEL logo
+    │   └── *.png          # Progress bar and dialog assets
     └── wallpapers/        # Desktop wallpapers
 ```
 
 ## Credits
 
-- **[BD-Configs](https://gitlab.com/theblackdon/bd-configs)** - Original dotfiles by TheBlackDon
+- **[BD-Configs](https://gitlab.com/theblackdon/karamel)** - Original dotfiles by TheBlackDon
 - **[Karamel](https://github.com/...)** - Pixel art assets and branding
 - **[DankMaterialShell (DMS)](https://github.com/dburian/DankMaterialShell)** - Beautiful Material Design shell for Wayland
 - **[Hyprland](https://hyprland.org/)** - Dynamic tiling Wayland compositor

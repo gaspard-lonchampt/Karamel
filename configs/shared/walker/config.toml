@@ -1,0 +1,26 @@
+# Walker Configuration - Karamel (Omarchy-inspired)
+
+force_keyboard_focus = true
+selection_wrap = true
+theme = "karamel"
+hide_action_hints = true
+
+[placeholders]
+"default" = { input = " Search...", list = "No Results" }
+
+[keybinds]
+quick_activate = []
+
+[ui]
+fullscreen = false
+width = 600
+
+[list]
+max_entries = 50
+show_initial_entries = true
+
+[search]
+delay = 0
+
+[activation_mode]
+disabled = true

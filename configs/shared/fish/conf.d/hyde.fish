@@ -142,7 +142,7 @@ alias up='hyde-shell pm upgrade'
 alias pl='hyde-shell pm search installed'
 alias pa='hyde-shell pm search all'
 alias g='git'
-alias fastfetch='fastfetch --logo-type kitty'
+# alias fastfetch='fastfetch --logo-type kitty'  # Disabled - using Karamel logo from config
 
 # Directory navigation shortcuts
 alias ..='cd ..'

@@ -140,7 +140,7 @@
   "vpnLastConnected": "",
   "iconTheme": "Yaru-sage",
   "launcherLogoMode": "custom",
-  "launcherLogoCustomPath": "$HOME/.config/bd-configs/assets/karamel-logo.png",
+  "launcherLogoCustomPath": "$HOME/.config/karamel/assets/karamel-logo.png",
   "launcherLogoColorOverride": "primary",
   "launcherLogoColorInvertOnMode": false,
   "launcherLogoBrightness": 0.5,

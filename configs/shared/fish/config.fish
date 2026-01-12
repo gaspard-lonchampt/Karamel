@@ -23,3 +23,32 @@ alias cc claude
 
 # Configure sudo askpass helper
 set -gx SUDO_ASKPASS $HOME/.askpass.sh
+
+# npm global packages
+if not contains $HOME/.npm-global/bin $PATH
+    set -gx PATH $HOME/.npm-global/bin $PATH
+end
+
+# aconfmgr reminder for pacman/yay
+function pacman --wraps=pacman
+    echo "╭───────────────────────────────────────────────────────╮"
+    echo "│ 📦 aconfmgr - Add package to the right file:          │"
+    echo "│   ~/.config/aconfmgr/XX-category.sh                   │"
+    echo "│   AddPackage name  # description                      │"
+    echo "│                                                       │"
+    echo "│ Or: aconfmgr save → sort 99-unsorted.sh → clear it    │"
+    echo "╰───────────────────────────────────────────────────────╯"
+    command pacman $argv
+end
+
+function yay --wraps=yay
+    echo "╭───────────────────────────────────────────────────────╮"
+    echo "│ 📦 aconfmgr - Add package to the right file:          │"
+    echo "│   ~/.config/aconfmgr/XX-category.sh                   │"
+    echo "│   AddPackage name  # description                      │"
+    echo "│                                                       │"
+    echo "│ Or: aconfmgr save → sort 99-unsorted.sh → clear it    │"
+    echo "╰───────────────────────────────────────────────────────╯"
+    command yay $argv
+end
+

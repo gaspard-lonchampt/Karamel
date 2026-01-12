@@ -15,11 +15,13 @@ source "$REPO_DIR/lib/dotfiles.sh"
 source "$REPO_DIR/lib/themes.sh"
 source "$REPO_DIR/lib/greeter.sh"
 source "$REPO_DIR/lib/dcli.sh"
+source "$REPO_DIR/lib/plymouth.sh"
 
 # Installation state variables
 INSTALL_HYPRLAND=false
 INSTALL_NIRI=false
 INSTALL_DCLI=false
+INSTALL_PLYMOUTH=false
 OPTIONAL_APPS=()
 
 # Display welcome screen
@@ -142,6 +144,23 @@ select_dcli() {
     echo ""
 }
 
+# Ask user if they want Plymouth boot theme
+select_plymouth() {
+    log_step "Plymouth Boot Theme"
+
+    echo "The Karamel Plymouth theme displays a tiger-stripe logo during boot."
+    echo ""
+
+    if prompt_yes_no "Install Karamel Plymouth boot theme?" "y"; then
+        INSTALL_PLYMOUTH=true
+        log_info "Plymouth theme will be installed"
+    else
+        INSTALL_PLYMOUTH=false
+        log_info "Skipping Plymouth theme installation"
+    fi
+    echo ""
+}
+
 # Backup confirmation
 confirm_backup() {
     log_step "Configuration Backup"
@@ -201,7 +220,7 @@ post_install() {
         echo ""
     fi
 
-    echo -e "${YELLOW}Tip:${NC} Keep the bd-configs directory to easily update configs!"
+    echo -e "${YELLOW}Tip:${NC} Keep the karamel directory to easily update configs!"
     echo ""
     print_separator
     echo ""
@@ -227,6 +246,7 @@ main() {
     select_compositors
     select_optional_apps
     select_dcli
+    select_plymouth
 
     # Confirm backup
     confirm_backup
@@ -254,6 +274,11 @@ main() {
     # Setup dcli if selected
     if [ "$INSTALL_DCLI" = true ]; then
         setup_dcli "$(detect_user)" "$REPO_DIR" "$INSTALL_HYPRLAND" "$INSTALL_NIRI" "${OPTIONAL_APPS[@]}" || log_warn "dcli setup failed, but continuing with installation"
+    fi
+
+    # Setup Plymouth boot theme if selected
+    if [ "$INSTALL_PLYMOUTH" = true ]; then
+        setup_plymouth "$REPO_DIR" || log_warn "Plymouth setup failed, but continuing with installation"
     fi
 
     # Post-installation

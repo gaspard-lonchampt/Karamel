@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Theme application functions for bd-configs installer
+# Theme application functions for karamel installer
 # Adapted from install-hyprland-dotfiles.sh and install-niri-dotfiles.sh
 
 # Source utils for logging

@@ -1,0 +1,333 @@
+# Karamel Configuration Manifest
+# Récapitulatif de toutes les configurations du projet
+
+project:
+  name: Karamel
+  description: Desktop environment for Hyprland & Niri with DankMaterialShell
+  theme: Catppuccin Mocha
+  last_updated: "2026-01-12"
+  version: "1.0.0"
+
+colors:
+  catppuccin:
+    base: "#1e1e2e"
+    surface0: "#313244"
+    surface1: "#45475a"
+    text: "#cdd6f4"
+    mauve: "#cba6f7"
+  karamel:
+    beige: "#e8c8a0"
+    orange: "#d4a574"
+    orange_dark: "#c87830"
+    brown: "#8b5a2b"
+
+compositors:
+  hyprland:
+    main_config: configs/hyprland/hypr/hyprland.conf
+    keybinds_universal: configs/hyprland/hypr/keybinds-universal.conf
+    keybinds_dms: configs/hyprland/hypr/keybinds-dms.conf
+    dms_settings: configs/hyprland/DankMaterialShell/settings.json
+  niri:
+    main_config: configs/niri/niri/config.kdl
+    keybinds: configs/niri/niri/binds.kdl
+    dms_settings: configs/niri/DankMaterialShell/settings.json
+
+applications:
+  fish:
+    config: configs/shared/fish/config.fish
+  kitty:
+    config: configs/shared/kitty/kitty.conf
+  fastfetch:
+    config: configs/shared/fastfetch/config.jsonc
+    logo: assets/karamel-cat.txt
+  walker:
+    config: configs/shared/walker/config.toml
+    theme: configs/shared/walker/themes/karamel/style.css
+  dms:
+    settings: configs/shared/DankMaterialShell/settings.json
+
+gtk:
+  gtk3: configs/shared/gtk-3.0/
+  gtk4: configs/shared/gtk-4.0/
+
+scripts:
+  keybinds_menu: scripts/keybinds.sh
+  screenshot: scripts/screenshot.sh
+  installer: install.sh
+  verifier: verify-install.sh
+
+installer_libs:
+  utils: lib/utils.sh
+  checks: lib/checks.sh
+  packages: lib/packages.sh
+  dotfiles: lib/dotfiles.sh
+  themes: lib/themes.sh
+  greeter: lib/greeter.sh
+  dcli: lib/dcli.sh
+  plymouth: lib/plymouth.sh
+
+plymouth:
+  theme_dir: assets/plymouth/
+  files:
+    config: assets/plymouth/karamel.plymouth
+    script: assets/plymouth/karamel.script
+    logo: assets/plymouth/logo.png
+    progress_bar: assets/plymouth/progress_bar.png
+    progress_box: assets/plymouth/progress_box.png
+    entry: assets/plymouth/entry.png
+    bullet: assets/plymouth/bullet.png
+    lock: assets/plymouth/lock.png
+  install_path: /usr/share/plymouth/themes/karamel
+  style:
+    type: png
+    font: "ANSI Shadow"
+    rendering: png_image
+    color: "#d4a574"
+    background: "#1e1e2e"
+    ascii_art: |
+      ██╗  ██╗ █████╗ ██████╗  █████╗ ███╗   ███╗███████╗██╗
+      ██║ ██╔╝██╔══██╗██╔══██╗██╔══██╗████╗ ████║██╔════╝██║
+      █████╔╝ ███████║██████╔╝███████║██╔████╔██║█████╗  ██║
+      ██╔═██╗ ██╔══██║██╔══██╗██╔══██║██║╚██╔╝██║██╔══╝  ██║
+      ██║  ██╗██║  ██║██║  ██║██║  ██║██║ ╚═╝ ██║███████╗███████╗
+      ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝
+    note: "ASCII art converted to PNG for LUKS compatibility"
+
+assets:
+  logo_png: assets/karamel-logo.png
+  logo_ascii: assets/karamel-cat.txt
+  wallpapers: assets/wallpapers/
+  plymouth: assets/plymouth/
+
+greeter:
+  type: dms-greeter
+  sync_command: "dms greeter sync"
+  status_command: "dms greeter status"
+  cache_dir: /var/cache/dms-greeter
+  synced_files:
+    - settings.json
+    - session.json
+    - colors.json
+  greetd_config: /etc/greetd/config.toml
+  session_file: /usr/share/wayland-sessions/hyprland-dms.desktop
+  note: "Theme synced from ~/.config/DankMaterialShell/ to greeter cache"
+
+boot:
+  loader: systemd-boot
+  config: /boot/loader/loader.conf
+  entry: /boot/loader/entries/karamel.conf
+  entry_title: "Karamel"
+  kernel_options: "quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0 systemd.show_status=false"
+  timeout: 1
+  note: "Renamed from arch.conf to karamel.conf for consistency"
+
+keybindings:
+  organization:
+    style: "Omarchy-inspired categories"
+    format: "bindd (Hyprland) / hotkey-overlay-title (niri)"
+    categories:
+      - "APPLICATIONS - Lanceurs d'apps"
+      - "AUDIO & MEDIA - Volume, lecture"
+      - "LUMINOSITE - Contrôle écran"
+      - "CAPTURES D'ECRAN - Screenshots"
+      - "GESTION FENETRES - Fermer, flottant"
+      - "NAVIGATION FENETRES - Focus"
+      - "DEPLACEMENT FENETRES - Déplacer"
+      - "NAVIGATION MONITEURS - Multi-écrans"
+      - "WORKSPACES - Espaces de travail"
+      - "REDIMENSIONNEMENT - Taille fenêtres"
+      - "OUTILS SHELL - Pyprland, Hyprview"
+      - "POWER MODES - Gestion batterie/performance"
+      - "SYSTEME - Verrouillage, quitter"
+      - "DMS SHELL - Contrôles DankMaterialShell"
+  config_files:
+    hyprland_universal: configs/hyprland/hypr/keybinds-universal.conf
+    hyprland_dms: configs/hyprland/hypr/keybinds-dms.conf
+    niri: configs/niri/niri/binds.kdl
+  walker_menu:
+    key: "Super + :"
+    script: ~/.config/karamel/scripts/keybinds.sh
+    note: "Parse les configs et affiche par catégorie dans Walker"
+  lock_screen:
+    key: "Ctrl + Alt + L"
+    command: "loginctl lock-session"
+    note: "Utilise DMS lock screen intégré (fonctionne sur Hyprland & niri)"
+  screenshots:
+    script: ~/Karamel/scripts/screenshot.sh
+    output_dir: ~/Images/Screenshots
+    tools:
+      - grim    # Capture Wayland
+      - slurp   # Sélection de région
+      - satty   # Annotation
+    keybinds:
+      area: "Print"
+      screen: "Ctrl + Print"
+      copy: "Super + Shift + S"
+    note: "Script universel pour Hyprland & niri avec annotation satty"
+  apps_removed:
+    - "Signal (non installé)"
+    - "Obsidian (non installé)"
+    - "lightworks (non installé)"
+    - "swaylock (remplacé par DMS lock)"
+  azerty_adaptations:
+    note: "Keybindings adaptés pour clavier AZERTY français"
+    mappings:
+      - "Super + ( (touche 5) → Absorber/expulser fenêtre gauche"
+      - "Super + ) (touche °) → Absorber/expulser fenêtre droite"
+      - "Super + - (touche 6) → Réduire largeur 10%"
+      - "Super + = → Agrandir largeur 10%"
+  framework_16_fn_keys:
+    note: "Touches fonction Framework Laptop 16"
+    mappings:
+      - "Fn+F1 (XF86AudioMute) → Mute/Unmute"
+      - "Fn+F2 (XF86AudioLowerVolume) → Volume -"
+      - "Fn+F3 (XF86AudioRaiseVolume) → Volume +"
+      - "Fn+F4 (XF86AudioPrev) → Piste précédente"
+      - "Fn+F5 (XF86AudioPlay) → Lecture/Pause"
+      - "Fn+F6 (XF86AudioNext) → Piste suivante"
+      - "Fn+F7 (XF86MonBrightnessDown) → Luminosité -"
+      - "Fn+F8 (XF86MonBrightnessUp) → Luminosité +"
+      - "Fn+F9 (XF86Display) → Vue d'ensemble workspaces"
+      - "Fn+F10 → Rétroéclairage clavier (hardware)"
+      - "Fn+F11 (Print) → Screenshot"
+
+audio:
+  backend: pipewire
+  packages:
+    - pipewire
+    - pipewire-pulse
+    - pipewire-alsa
+    - wireplumber
+  services:
+    - pipewire.service (user)
+    - pipewire-pulse.service (user)
+    - wireplumber.service (user)
+  framework_16:
+    issue: "PipeWire sélectionne le profil Headphones au lieu de Speaker par défaut"
+    fix: /etc/wireplumber/wireplumber.conf.d/20-framework-speaker.conf
+    device_name: "alsa_card.pci-0000_c2_00.6"
+    default_profile: "HiFi (Mic1, Mic2, Speaker)"
+    config: |
+      monitor.alsa.rules = [
+        {
+          matches = [
+            { device.name = "alsa_card.pci-0000_c2_00.6" }
+          ]
+          actions = {
+            update-props = {
+              device.profile = "HiFi (Mic1, Mic2, Speaker)"
+            }
+          }
+        }
+      ]
+  note: "Redémarrer wireplumber après modification: systemctl --user restart wireplumber"
+
+bluetooth:
+  backend: bluez
+  packages:
+    - bluez
+    - bluez-utils
+    - linux-firmware
+  service: bluetooth.service
+  enable_command: "sudo systemctl enable --now bluetooth"
+  cli_tool: bluetoothctl
+  gui_tool: blueman (bug Python 3.14 en cours)
+  pairing_commands:
+    - "power on"
+    - "scan on"
+    - "pair XX:XX:XX:XX:XX:XX"
+    - "connect XX:XX:XX:XX:XX:XX"
+    - "trust XX:XX:XX:XX:XX:XX"
+  framework_16:
+    note: "Déconnexions occasionnelles avec écouteurs BT - redémarrer bluetooth.service si nécessaire"
+  note: "DMS nécessite un redémarrage de session pour détecter les nouveaux adaptateurs"
+
+power_management:
+  backend: tlp
+  framework_driver: cros_charge-control
+  packages:
+    - tlp
+    - tlp-rdw
+    - libnotify  # Notifications
+    - noto-fonts-emoji  # Icônes emoji
+  script: ~/Karamel/scripts/karamel-power.sh
+  config: ~/.config/karamel/power.conf
+  service: karamel-power.service (user)
+  fish_alias: kpower  # ~/.config/fish/functions/kpower.fish
+  system_configs:
+    - /etc/tlp.d/01-framework.conf      # Config TLP de base
+    - /etc/tlp.d/02-karamel-mode.conf   # Config dynamique par mode
+    - /etc/modprobe.d/framework-charge.conf
+    - /etc/sudoers.d/karamel-power
+  keybind: "Super + Ctrl + B"  # Cycle entre les 3 modes
+  modes:
+    chill:
+      icon: "🌿"
+      charge_limit: 60
+      profile: power
+      cpu_boost: off
+      description: "Économie max - batterie préservée"
+    notso:
+      icon: "🐎"
+      charge_limit: 80
+      profile: balance_power
+      cpu_boost: off
+      description: "Équilibré - usage quotidien"
+    furious:
+      icon: "🔥"
+      charge_limit: 100
+      profile: performance
+      cpu_boost: on
+      description: "Performance max - gaming/compilation"
+  auto_switch:
+    enabled: true
+    daemon: karamel-power.service
+    check_interval: 30  # secondes
+    thresholds:
+      furious: "CPU > 70% OR GPU > 60%"
+      notso: "CPU > 50% OR GPU > 40%"
+      chill: "default"
+  commands:
+    status: "kpower"
+    cycle: "kpower cycle"
+    set_mode: "kpower {chill|notso|furious}"
+    tlp_battery: "sudo tlp-stat -b"
+  note: "Gestion intelligente batterie Framework 16 via TLP + cros-ec avec 3 modes et auto-switch"
+
+dms_customizations:
+  settings_file: ~/.config/DankMaterialShell/settings.json
+  system_monitor:
+    enabled: false
+    setting: "systemMonitorEnabled"
+    note: "Overlay CPU/GPU/MEM/NET désactivé (était au centre de l'écran)"
+  network:
+    manager: "DMS Control Center"
+    setting: "controlCenterShowNetworkIcon"
+    note: "network-manager-applet supprimé - DMS gère le réseau nativement"
+  reload_command: "quickshell -k && quickshell &"
+  note: "Après modification des settings, recharger DMS avec la commande ci-dessus"
+
+packages:
+  manager: aconfmgr
+  config_dir: ~/.config/aconfmgr
+  install_command: "yay -S aconfmgr-git"
+  commands:
+    save: "aconfmgr save"
+    apply: "aconfmgr apply"
+    diff: "aconfmgr diff"
+  config_files:
+    - 10-base.sh          # Système de base (kernel, firmware, etc.)
+    - 20-desktop.sh       # Compositeurs Wayland, greeter, outils Wayland
+    - 30-audio-bluetooth.sh # Audio PipeWire, Bluetooth, réseau
+    - 35-power.sh         # Power management (TLP, Framework charge control)
+    - 40-terminal-shell.sh  # Terminal, shell, éditeurs, lanceurs
+    - 50-themes.sh        # Thèmes GTK/Qt, curseur, icônes, polices
+    - 60-dev.sh           # Outils développement, AUR helpers
+    - 70-apps.sh          # Applications (navigateur, messagerie)
+    - 90-temporaire.sh    # Packages temporaires (à nettoyer)
+    - 99-files.sh         # Fichiers système modifiés
+  workflow:
+    install: "Ajouter 'AddPackage nom # description' dans le fichier .sh approprié, puis aconfmgr apply"
+    remove: "Retirer la ligne AddPackage, puis aconfmgr apply"
+    audit: "aconfmgr save pour voir les packages non déclarés"
+  note: "Packages organisés par catégorie avec commentaires dans ~/.config/aconfmgr/*.sh"

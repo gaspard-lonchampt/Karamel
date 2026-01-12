@@ -1,0 +1,9 @@
+# Karamel Power - Allow power management without password
+# Install: sudo cp ~/Karamel/configs/system/sudoers.d/karamel-power /etc/sudoers.d/
+# Then: sudo chmod 440 /etc/sudoers.d/karamel-power
+
+# ectool chargecontrol for battery sustainer (START/END thresholds)
+sarp ALL=(ALL) NOPASSWD: /usr/bin/ectool chargecontrol *
+
+# Platform profile for CPU power management
+sarp ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/firmware/acpi/platform_profile

@@ -6,7 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-12"
-  version: "1.2.1"
+  version: "1.2.2"
 
 colors:
   catppuccin:
@@ -41,6 +41,18 @@ applications:
       - kbinds: "Display keybinds (terminal or Walker)"
   kitty:
     config: configs/shared/kitty/kitty.conf
+    shell: /usr/bin/fish
+    prefix: "ctrl+q"
+    splits:
+      enabled_layouts: "splits,stack"
+      vertical: "ctrl+q > i"
+      horizontal: "ctrl+q > u"
+      focus: "ctrl+q > h/j/k/l (vim-style)"
+      resize: "ctrl+q > r"
+      close: "ctrl+q > q"
+      zoom: "ctrl+q > z (toggle stack layout)"
+      new_tab: "ctrl+q > t"
+    note: "Préfixe style tmux - ne pas mettre de commentaires inline sur les commandes 'launch'"
   fastfetch:
     config: configs/shared/fastfetch/config.jsonc
     logo: assets/karamel-cat.txt
@@ -380,6 +392,19 @@ power_management:
     TLP and power-profiles-daemon are NOT used.
     Install sudoers: sudo cp ~/Karamel/configs/system/sudoers.d/karamel-power /etc/sudoers.d/ && sudo chmod 440 /etc/sudoers.d/karamel-power
     Tested: 2026-01-12 - daemon correctly switches modes based on CPU load with 30s hysteresis
+
+gpu:
+  hardware: NVIDIA GeForce RTX 5070 Max-Q (Blackwell)
+  driver: nvidia-open-dkms
+  driver_version: "590.x"
+  vulkan: true
+  packages:
+    - nvidia-open-dkms  # Kernel modules (required for Vulkan)
+    - nvidia-utils      # Userspace libraries (dependency)
+  note: |
+    RTX 50 series (Blackwell) requires nvidia-open-dkms (not proprietary nvidia-dkms).
+    Required for Zed editor and other Vulkan applications.
+    Added: 2026-01-12
 
 dms_customizations:
   settings_file: ~/.config/DankMaterialShell/settings.json

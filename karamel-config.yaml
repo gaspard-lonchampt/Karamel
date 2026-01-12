@@ -6,7 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-12"
-  version: "1.1.0"
+  version: "1.2.1"
 
 colors:
   catppuccin:
@@ -57,7 +57,7 @@ gtk:
 scripts:
   keybinds_menu: scripts/keybinds.sh
   keybinds_parser: scripts/karamel-keybinds.sh
-  power_manager: scripts/karamel-power.sh
+  power_daemon: scripts/karamel-power-daemon.sh
   screenshot: scripts/screenshot.sh
   installer: install.sh
   verifier: verify-install.sh
@@ -166,6 +166,18 @@ keybindings:
       kbinds: "Affiche keybinds dans terminal"
       kbinds -w: "Ouvre keybinds dans Walker"
     note: "Parser dynamique - exécuter kreload après modification des configs"
+  workspaces:
+    count: 4
+    azerty_bindings:
+      - "Super + & → Workspace 1"
+      - "Super + é → Workspace 2"
+      - "Super + \" → Workspace 3"
+      - "Super + ' → Workspace 4"
+      - "Super + Shift + [key] → Move to workspace"
+    numpad_bindings:
+      hyprland: "KP_1 to KP_4"
+      niri: "KP_End, KP_Down, KP_Next, KP_Left"
+    note: "Reduced to 4 workspaces to free Super + ( and Super + - for resize/preselect"
   lock_screen:
     key: "Ctrl + Alt + L"
     command: "loginctl lock-session"
@@ -261,56 +273,106 @@ bluetooth:
   note: "DMS nécessite un redémarrage de session pour détecter les nouveaux adaptateurs"
 
 power_management:
-  backend: tlp
-  framework_driver: cros_charge-control
+  backend: ectool chargecontrol + platform_profile + auto-cpufreq
+  framework_driver: cros_charge-control (battery sustainer via ectool)
   packages:
-    - tlp
-    - tlp-rdw
-    - libnotify  # Notifications
-    - noto-fonts-emoji  # Icônes emoji
-  script: ~/Karamel/scripts/karamel-power.sh
-  config: ~/.config/karamel/power.conf
-  service: karamel-power.service (user)
-  fish_alias: kpower  # ~/.config/fish/functions/kpower.fish
-  system_configs:
-    - /etc/tlp.d/01-framework.conf      # Config TLP de base
-    - /etc/tlp.d/02-karamel-mode.conf   # Config dynamique par mode
-    - /etc/modprobe.d/framework-charge.conf
-    - /etc/sudoers.d/karamel-power
-  keybind: "Super + Ctrl + B"  # Cycle entre les 3 modes
+    - fw-ectool-git  # AUR - Framework EC control
+    - auto-cpufreq   # CPU frequency management on battery
+    - libnotify      # Notifications
+  files:
+    fish_function: ~/.config/fish/functions/kpower.fish
+    daemon_script: ~/Karamel/scripts/karamel-power-daemon.sh
+    systemd_service: ~/.config/systemd/user/karamel-power.service
+    sudoers: /etc/sudoers.d/karamel-power
+    sudoers_source: ~/Karamel/configs/system/sudoers.d/karamel-power
+    dms_plugin: ~/.config/DankMaterialShell/plugins/karamel-power/
+  system_paths:
+    battery_sustainer: "ectool chargecontrol normal {START} {END}"
+    cpu_profile: /sys/firmware/acpi/platform_profile
+    ac_online: /sys/class/power_supply/ACAD/online
+    battery_capacity: /sys/class/power_supply/BAT1/capacity
+    charge_start_threshold: /sys/class/power_supply/BAT1/charge_control_start_threshold
+    charge_end_threshold: /sys/class/power_supply/BAT1/charge_control_end_threshold
   modes:
     chill:
-      icon: "🌿"
-      charge_limit: 60
-      profile: power
-      cpu_boost: off
-      description: "Économie max - batterie préservée"
+      icon: "eco"
+      sustainer: "40-60%"
+      platform_profile: low-power
+      description: "Max savings - battery cycle 40-60%"
     notso:
-      icon: "🐎"
-      charge_limit: 80
-      profile: balance_power
-      cpu_boost: off
-      description: "Équilibré - usage quotidien"
+      icon: "balance"
+      sustainer: "60-80%"
+      platform_profile: balanced
+      description: "Balanced - battery cycle 60-80%"
     furious:
-      icon: "🔥"
-      charge_limit: 100
-      profile: performance
-      cpu_boost: on
-      description: "Performance max - gaming/compilation"
-  auto_switch:
-    enabled: true
-    daemon: karamel-power.service
-    check_interval: 30  # secondes
+      icon: "bolt"
+      sustainer: "0-100%"
+      platform_profile: performance
+      description: "Max performance - full charge"
+  kpower_function:
+    commands:
+      status: "kpower status"
+      set_mode: "kpower {chill|notso|furious}"
+    status_output:
+      - "Battery: capacity% (status)"
+      - "Profile: platform_profile"
+      - "Sustainer: start-end%"
+      - "Daemon: current_mode"
+    note: "Status reads from sysfs (no sudo required)"
+  daemon:
+    description: "Auto-switch mode based on CPU/GPU load (AC power only)"
+    state_file: /tmp/karamel-power-mode
+    cpu_detection: "Dual sampling from /proc/stat (1s interval)"
+    gpu_detection: /sys/class/drm/card1/device/gpu_busy_percent
+    check_interval: "~6s (5s sleep + 1s CPU sampling)"
     thresholds:
-      furious: "CPU > 70% OR GPU > 60%"
-      notso: "CPU > 50% OR GPU > 40%"
-      chill: "default"
-  commands:
-    status: "kpower"
-    cycle: "kpower cycle"
-    set_mode: "kpower {chill|notso|furious}"
-    tlp_battery: "sudo tlp-stat -b"
-  note: "Gestion intelligente batterie Framework 16 via TLP + cros-ec avec 3 modes et auto-switch"
+      chill: "load < 30%"
+      notso: "load 30-70%"
+      furious: "load > 70%"
+    hysteresis: "6 consecutive checks (~30s) before switching"
+    commands:
+      enable: "systemctl --user enable --now karamel-power"
+      status: "systemctl --user status karamel-power"
+      logs: "journalctl --user -u karamel-power -f"
+    behavior:
+      on_ac: "Active - monitors load and auto-switches modes"
+      on_battery: "Paused - auto-cpufreq handles power management"
+  dms_integration:
+    widget: "Karamel Power"
+    location: "Control Center"
+    features:
+      - "Click to cycle through modes"
+      - "Detail panel with 3 mode buttons"
+      - "Shows sustainer range and CPU profile"
+    plugin_file: KaramelPower.qml
+  auto_cpufreq:
+    service: auto-cpufreq.service (system)
+    description: "Automatic CPU frequency management based on power source"
+    behavior:
+      on_battery:
+        governor: powersave
+        turbo: "disabled or limited"
+        scaling: "Dynamic adjustment based on load"
+      on_ac:
+        governor: performance
+        turbo: enabled
+        scaling: "Allows maximum frequencies"
+    commands:
+      status: "auto-cpufreq --stats"
+      live_monitor: "sudo auto-cpufreq --monitor"
+    note: "Works automatically, no configuration needed"
+  sudoers_rules:
+    - "sarp ALL=(ALL) NOPASSWD: /usr/bin/ectool chargecontrol *"
+    - "sarp ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/firmware/acpi/platform_profile"
+  note: |
+    Framework 16 uses EC "battery sustainer" for START/END thresholds.
+    Complete architecture:
+    - On AC: karamel-power daemon auto-switches sustainer+profile based on CPU/GPU load
+    - On battery: auto-cpufreq handles CPU automatically (powersave, turbo off)
+    - platform_profile: Controls TDP envelope (low-power/balanced/performance)
+    TLP and power-profiles-daemon are NOT used.
+    Install sudoers: sudo cp ~/Karamel/configs/system/sudoers.d/karamel-power /etc/sudoers.d/ && sudo chmod 440 /etc/sudoers.d/karamel-power
+    Tested: 2026-01-12 - daemon correctly switches modes based on CPU load with 30s hysteresis
 
 dms_customizations:
   settings_file: ~/.config/DankMaterialShell/settings.json
@@ -334,16 +396,16 @@ packages:
     apply: "aconfmgr apply"
     diff: "aconfmgr diff"
   config_files:
-    - 10-base.sh          # Système de base (kernel, firmware, etc.)
-    - 20-desktop.sh       # Compositeurs Wayland, greeter, outils Wayland
-    - 30-audio-bluetooth.sh # Audio PipeWire, Bluetooth, réseau
-    - 35-power.sh         # Power management (TLP, Framework charge control)
-    - 40-terminal-shell.sh  # Terminal, shell, éditeurs, lanceurs
-    - 50-themes.sh        # Thèmes GTK/Qt, curseur, icônes, polices
-    - 60-dev.sh           # Outils développement, AUR helpers
-    - 70-apps.sh          # Applications (navigateur, messagerie)
-    - 90-temporaire.sh    # Packages temporaires (à nettoyer)
-    - 99-files.sh         # Fichiers système modifiés
+    - 10-base.sh          # Base system (kernel, firmware, etc.)
+    - 20-desktop.sh       # Wayland compositors, greeter, Wayland tools
+    - 30-audio-bluetooth.sh # PipeWire audio, Bluetooth, network
+    - 35-power.sh         # Power management (fw-ectool, auto-cpufreq)
+    - 40-terminal-shell.sh  # Terminal, shell, editors, launchers
+    - 50-themes.sh        # GTK/Qt themes, cursor, icons, fonts
+    - 60-dev.sh           # Development tools, AUR helpers
+    - 70-apps.sh          # Applications (browser, messaging)
+    - 90-temporaire.sh    # Temporary packages (to clean up)
+    - 99-files.sh         # Modified system files + IgnorePaths
   workflow:
     install: "Ajouter 'AddPackage nom # description' dans le fichier .sh approprié, puis aconfmgr apply"
     remove: "Retirer la ligne AddPackage, puis aconfmgr apply"

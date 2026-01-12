@@ -57,6 +57,7 @@ binds {
 
     Mod+X repeat=false hotkey-overlay-title="Vue d'ensemble workspaces" { toggle-overview; }
     Mod+Q repeat=false hotkey-overlay-title="Fermer la fenêtre" { close-window; }
+    Mod+Shift+Q repeat=false hotkey-overlay-title="Fermer le workspace" { spawn "sh" "-c" "~/Karamel/scripts/karamel-workspace.sh kill"; }
 
     // ┌───────────────────────────────────────────────────────────────────────────┐
     // │                         🧭 NAVIGATION FENÊTRES                            │
@@ -118,6 +119,18 @@ binds {
     Mod+U              hotkey-overlay-title="Workspace suivant" { focus-workspace-down; }
     Mod+I              hotkey-overlay-title="Workspace précédent" { focus-workspace-up; }
 
+    // Navigation directe AZERTY (1-4)
+    Mod+ampersand      hotkey-overlay-title="Workspace 1" { focus-workspace 1; }
+    Mod+eacute         hotkey-overlay-title="Workspace 2" { focus-workspace 2; }
+    Mod+quotedbl       hotkey-overlay-title="Workspace 3" { focus-workspace 3; }
+    Mod+apostrophe     hotkey-overlay-title="Workspace 4" { focus-workspace 4; }
+
+    // Déplacer colonne vers workspace AZERTY
+    Mod+Shift+ampersand    hotkey-overlay-title="Envoyer vers workspace 1" { move-column-to-workspace 1; }
+    Mod+Shift+eacute       hotkey-overlay-title="Envoyer vers workspace 2" { move-column-to-workspace 2; }
+    Mod+Shift+quotedbl     hotkey-overlay-title="Envoyer vers workspace 3" { move-column-to-workspace 3; }
+    Mod+Shift+apostrophe   hotkey-overlay-title="Envoyer vers workspace 4" { move-column-to-workspace 4; }
+
     // Déplacer vers workspace relatif
     Mod+Ctrl+Page_Down hotkey-overlay-title="Colonne vers workspace suivant" { move-column-to-workspace-down; }
     Mod+Ctrl+Page_Up   hotkey-overlay-title="Colonne vers workspace précédent" { move-column-to-workspace-up; }
@@ -144,27 +157,18 @@ binds {
     Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
     Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
 
-    // Workspaces numérotés
-    Mod+1 hotkey-overlay-title="Workspace 1" { focus-workspace 1; }
-    Mod+2 hotkey-overlay-title="Workspace 2" { focus-workspace 2; }
-    Mod+3 hotkey-overlay-title="Workspace 3" { focus-workspace 3; }
-    Mod+4 hotkey-overlay-title="Workspace 4" { focus-workspace 4; }
-    Mod+5 hotkey-overlay-title="Workspace 5" { focus-workspace 5; }
-    Mod+6 hotkey-overlay-title="Workspace 6" { focus-workspace 6; }
-    Mod+7 hotkey-overlay-title="Workspace 7" { focus-workspace 7; }
-    Mod+8 hotkey-overlay-title="Workspace 8" { focus-workspace 8; }
-    Mod+9 hotkey-overlay-title="Workspace 9" { focus-workspace 9; }
+    // Workspaces numérotés (Pavé numérique)
+    // Note: KP_End/KP_Down/etc au lieu de KP_1/KP_2/etc car bug xkbcommon (même scancode)
+    Mod+KP_End   hotkey-overlay-title="Workspace 1" { focus-workspace 1; }
+    Mod+KP_Down  hotkey-overlay-title="Workspace 2" { focus-workspace 2; }
+    Mod+KP_Next  hotkey-overlay-title="Workspace 3" { focus-workspace 3; }
+    Mod+KP_Left  hotkey-overlay-title="Workspace 4" { focus-workspace 4; }
 
-    // Déplacer vers workspace numéroté
-    Mod+Ctrl+1 hotkey-overlay-title="Envoyer vers workspace 1" { move-column-to-workspace 1; }
-    Mod+Ctrl+2 hotkey-overlay-title="Envoyer vers workspace 2" { move-column-to-workspace 2; }
-    Mod+Ctrl+3 hotkey-overlay-title="Envoyer vers workspace 3" { move-column-to-workspace 3; }
-    Mod+Ctrl+4 hotkey-overlay-title="Envoyer vers workspace 4" { move-column-to-workspace 4; }
-    Mod+Ctrl+5 hotkey-overlay-title="Envoyer vers workspace 5" { move-column-to-workspace 5; }
-    Mod+Ctrl+6 hotkey-overlay-title="Envoyer vers workspace 6" { move-column-to-workspace 6; }
-    Mod+Ctrl+7 hotkey-overlay-title="Envoyer vers workspace 7" { move-column-to-workspace 7; }
-    Mod+Ctrl+8 hotkey-overlay-title="Envoyer vers workspace 8" { move-column-to-workspace 8; }
-    Mod+Ctrl+9 hotkey-overlay-title="Envoyer vers workspace 9" { move-column-to-workspace 9; }
+    // Déplacer vers workspace (Pavé numérique)
+    Mod+Ctrl+KP_End   hotkey-overlay-title="Envoyer vers workspace 1" { move-column-to-workspace 1; }
+    Mod+Ctrl+KP_Down  hotkey-overlay-title="Envoyer vers workspace 2" { move-column-to-workspace 2; }
+    Mod+Ctrl+KP_Next  hotkey-overlay-title="Envoyer vers workspace 3" { move-column-to-workspace 3; }
+    Mod+Ctrl+KP_Left  hotkey-overlay-title="Envoyer vers workspace 4" { move-column-to-workspace 4; }
 
     // ┌───────────────────────────────────────────────────────────────────────────┐
     // │                         📐 REDIMENSIONNEMENT                              │

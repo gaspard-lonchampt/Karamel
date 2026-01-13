@@ -1,5 +1,6 @@
 if status is-interactive
-    # Commands to run in interactive sessions can go here
+    # SSH keys management with keychain
+    keychain --eval --quiet id_ed25519_github_2025 id_ed25519_mobilic_scalingo_2025 | source
 end
 
 # Set cursor theme for niri compositor

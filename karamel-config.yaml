@@ -5,7 +5,7 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-12"
+  last_updated: "2026-01-13"
   version: "1.2.2"
 
 colors:
@@ -494,3 +494,26 @@ packages:
     remove: "Retirer la ligne AddPackage, puis aconfmgr apply"
     audit: "aconfmgr save pour voir les packages non déclarés"
   note: "Packages organisés par catégorie avec commentaires dans ~/.config/aconfmgr/*.sh"
+
+ssh:
+  key_manager: keychain
+  algorithm: ed25519
+  keys:
+    github:
+      file: ~/.ssh/id_ed25519_github_2025
+      host: github.com
+      user: gaspard-lonchampt
+    scalingo:
+      file: ~/.ssh/id_ed25519_mobilic_scalingo_2025
+      host: ssh.osc-fr1.scalingo.com
+  config_file: ~/.ssh/config
+  fish_integration: ~/.config/fish/config.fish
+  best_practices:
+    - "Clés séparées par service"
+    - "Nommage: id_{algo}_{service}_{year}"
+    - "Passphrase obligatoire"
+    - "Rotation tous les 2 ans"
+  cli_tools:
+    github: github-cli (pacman)
+    scalingo: scalingo-cli (script officiel)
+  note: "Configuré le 2026-01-13"

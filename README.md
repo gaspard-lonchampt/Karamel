@@ -84,17 +84,24 @@ The installer will guide you through:
 - Nerd Fonts (FiraCode, symbols)
 
 **Terminal & Editors:**
-- kitty (terminal emulator)
+- kitty, alacritty (terminal emulators with FiraCode Nerd Font)
 - fish (shell)
 - helix, zed, vim (editors)
-- walker (application launcher)
+- walker, fuzzel (application launchers)
 - yazi (terminal file manager)
+- eza (modern ls replacement)
+- keychain (SSH key manager)
 
 **Applications:**
 - nemo (file manager)
 - fastfetch (system info)
 - zen-browser-bin (optional)
 - whatsapp-for-linux-git (optional)
+
+**Gaming:**
+- steam (with Proton support)
+- gamemode, gamescope, mangohud (performance tools)
+- protonup-qt (Proton-GE manager)
 
 ## Post-Installation
 
@@ -208,7 +215,7 @@ Karamel uses **aconfmgr** for declarative package management. All packages are o
 | `20-desktop.sh` | Wayland compositors (Hyprland, Niri, DMS, XDG portals) |
 | `30-audio-bluetooth.sh` | PipeWire audio, Bluetooth, NetworkManager |
 | `35-power.sh` | Power management (fw-ectool, auto-cpufreq) |
-| `40-terminal-shell.sh` | Terminal (kitty, fish, helix, zed, walker) |
+| `40-terminal-shell.sh` | Terminal (kitty, alacritty, fish, helix, zed, walker, keychain) |
 | `50-themes.sh` | GTK/Qt themes, fonts, cursors, icons |
 | `60-dev.sh` | Development tools (git, github-cli, cmake, yay) |
 | `70-apps.sh` | Applications (zen-browser, fastfetch) |
@@ -341,8 +348,9 @@ Or edit the compositor config to point to your own wallpaper.
 
 Custom branding assets are located in `assets/`:
 - `karamel-logo.png` - Pixel art cat for DMS launcher
+- `plymouth/logo.png` - Karamel text logo
 
-![Karamel Logo](assets/karamel-logo.png)
+![Karamel](assets/plymouth/logo.png)
 
 ## Troubleshooting
 
@@ -455,6 +463,7 @@ Karamel/
 │       └── 99-files.sh
 ├── configs/
 │   ├── shared/             # Shared between compositors
+│   │   ├── alacritty/
 │   │   ├── DankMaterialShell/
 │   │   ├── dms-greeter/
 │   │   ├── fastfetch/

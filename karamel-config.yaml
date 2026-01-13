@@ -6,6 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-13"
+  changelog: "Added alacritty config, switched to FiraCode Nerd Font"
   version: "1.2.2"
 
 colors:
@@ -42,6 +43,7 @@ applications:
   kitty:
     config: configs/shared/kitty/kitty.conf
     shell: /usr/bin/fish
+    font: "FiraCode Nerd Font Mono"
     prefix: "ctrl+q"
     splits:
       enabled_layouts: "splits,stack"
@@ -53,6 +55,11 @@ applications:
       zoom: "ctrl+q > z (toggle stack layout)"
       new_tab: "ctrl+q > t"
     note: "Préfixe style tmux - ne pas mettre de commentaires inline sur les commandes 'launch'"
+  alacritty:
+    config: configs/shared/alacritty/alacritty.toml
+    shell: /usr/bin/fish
+    font: "FiraCode Nerd Font Mono"
+    note: "Alternative légère à Kitty (pas de splits natifs)"
   fastfetch:
     config: configs/shared/fastfetch/config.jsonc
     logo: assets/karamel-cat.txt

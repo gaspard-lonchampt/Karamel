@@ -130,22 +130,28 @@ After first boot, customize your accent color via DMS:
 - `Ctrl + Alt + L` - Lock screen
 - `Super + Ctrl + Up or Down` - Move relative workspaces
 
-#### Kitty Terminal (prefix: Ctrl+Space)
-- `Ctrl+Space` then `i` - Split vertical
-- `Ctrl+Space` then `u` - Split horizontal
-- `Ctrl+Space` then `h/j/k/l` - Navigate splits (vim-style)
-- `Ctrl+Space` then `r` - Resize mode (arrow keys)
-- `Ctrl+Space` then `q` - Close split
+#### Kitty Terminal (prefix: Ctrl+Q)
+- `Ctrl+Q` then `i` - Split vertical
+- `Ctrl+Q` then `u` - Split horizontal
+- `Ctrl+Q` then `h/j/k/l` - Navigate splits (vim-style)
+- `Ctrl+Q` then `r` - Resize mode (arrow keys)
+- `Ctrl+Q` then `q` - Close split
+- `Ctrl+Q` then `z` - Toggle zoom (stack layout)
+- `Ctrl+Q` then `t` - New tab
 - `Ctrl+Shift+t` - New tab
 - `Ctrl+Shift+←/→` - Switch tabs
 - `Ctrl+Shift+Page Up/Down` - Scroll by page
 
-#### Media Keys
-- `XF86AudioRaiseVolume` - Volume up
-- `XF86AudioLowerVolume` - Volume down
-- `XF86AudioMute` - Toggle mute
-- `XF86MonBrightnessUp` - Brightness up
-- `XF86MonBrightnessDown` - Brightness down
+#### Media Keys (Framework Laptop Fn keys)
+- `Fn + F1` - Toggle mute
+- `Fn + F2` - Volume down
+- `Fn + F3` - Volume up
+- `Fn + F4` - Previous track
+- `Fn + F5` - Play/Pause
+- `Fn + F6` - Next track
+- `Fn + F7` - Brightness down
+- `Fn + F8` - Brightness up
+- `Fn + F9` - Workspace overview
 
 
 ## Walker Keybindings Menu
@@ -204,9 +210,11 @@ Karamel uses **aconfmgr** for declarative package management. All packages are o
 | `35-power.sh` | Power management (fw-ectool, auto-cpufreq) |
 | `40-terminal-shell.sh` | Terminal (kitty, fish, helix, zed, walker) |
 | `50-themes.sh` | GTK/Qt themes, fonts, cursors, icons |
-| `60-dev.sh` | Development tools (git, cmake, yay) |
+| `60-dev.sh` | Development tools (git, github-cli, cmake, yay) |
 | `70-apps.sh` | Applications (zen-browser, fastfetch) |
+| `75-gaming.sh` | Steam, Proton, gamemode, gamescope, mangohud |
 | `90-temporaire.sh` | Temporary packages |
+| `99-files.sh` | Modified system files + IgnorePaths |
 
 ### Using aconfmgr
 
@@ -302,23 +310,23 @@ All configuration files are symlinked from the repository, making customization 
 cd karamel-config
 
 # Edit compositor configs
-nano configs/hyprland/hypr/hyprland.conf
-nano configs/niri/niri/config.kdl
+vim configs/hyprland/hypr/hyprland.conf
+vim configs/niri/niri/config.kdl
 
 # Edit terminal config
-nano configs/shared/kitty/kitty.conf
+vim configs/shared/kitty/kitty.conf
 
 # Edit shell config
-nano configs/shared/fish/config.fish
+vim configs/shared/fish/config.fish
 
 # Edit DMS settings
-nano configs/shared/DankMaterialShell/settings.json
+vim configs/shared/DankMaterialShell/settings.json
 
 # Edit fastfetch (Karamel cat ASCII)
-nano configs/shared/fastfetch/config.jsonc
+vim configs/shared/fastfetch/config.jsonc
 ```
 
-Changes take effect immediately (or after reloading the compositor with `Super+Shift+R`).
+Changes take effect immediately (or after logging out and back in).
 
 ### Changing Wallpapers
 
@@ -332,8 +340,9 @@ Or edit the compositor config to point to your own wallpaper.
 ### Karamel Assets
 
 Custom branding assets are located in `assets/`:
-- `karamel-cat.txt` - ASCII art cat for fastfetch
 - `karamel-logo.png` - Pixel art cat for DMS launcher
+
+![Karamel Logo](assets/karamel-logo.png)
 
 ## Troubleshooting
 
@@ -350,11 +359,17 @@ sudo systemctl restart greetd
 ```
 
 ### Themes not applying
+
+Themes are configured via GTK settings files in `~/.config/gtk-3.0/settings.ini` and `~/.config/gtk-4.0/settings.ini`.
+
 ```bash
-# Reapply themes manually
-gsettings set org.gnome.desktop.interface gtk-theme 'catppuccin-mocha-mauve-standard+default'
-gsettings set org.gnome.desktop.interface icon-theme 'Yaru-sage'
-gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Ice'
+# Check current GTK theme config
+cat ~/.config/gtk-3.0/settings.ini
+
+# Reload DMS to apply theme changes
+quickshell -k && quickshell &
+
+# Or log out and log back in for full effect
 ```
 
 ### DMS shell not starting
@@ -418,15 +433,15 @@ Karamel/
 ├── README.md               # This file
 ├── karamel-config.yaml     # Configuration manifest
 ├── lib/                    # Installer library functions
-│   ├── utils.sh           # Utility functions
-│   ├── checks.sh          # System checks
-│   ├── packages.sh        # Package installation (aconfmgr format)
-│   ├── dotfiles.sh        # Config deployment
-│   ├── themes.sh          # Theme application
-│   ├── greeter.sh         # Display manager setup
-│   └── plymouth.sh        # Plymouth boot theme setup
-├── packages/               # Package definitions (aconfmgr format)
-│   └── aconfmgr/          # Categorized package files
+│   ├── utils.sh
+│   ├── checks.sh
+│   ├── packages.sh
+│   ├── dotfiles.sh
+│   ├── themes.sh
+│   ├── greeter.sh
+│   └── plymouth.sh
+├── packages/
+│   └── aconfmgr/           # Package definitions (aconfmgr format)
 │       ├── 10-base.sh
 │       ├── 20-desktop.sh
 │       ├── 30-audio-bluetooth.sh
@@ -435,32 +450,43 @@ Karamel/
 │       ├── 50-themes.sh
 │       ├── 60-dev.sh
 │       ├── 70-apps.sh
-│       └── 90-temporaire.sh
-├── configs/               # Configuration files
-│   ├── shared/            # Shared between compositors
-│   │   ├── fish/          # Fish shell config
-│   │   ├── kitty/         # Kitty terminal config
-│   │   ├── fastfetch/     # Fastfetch with Karamel cat
-│   │   ├── walker/        # Walker launcher config
-│   │   └── DankMaterialShell/  # DMS settings
-│   ├── hyprland/          # Hyprland-specific
-│   │   └── hypr/          # Hyprland config files
-│   └── niri/              # Niri-specific
-│       └── niri/          # Niri config files
-├── scripts/               # Helper scripts
-│   ├── keybinds.sh        # Walker keybindings menu
-│   ├── karamel-keybinds.sh # Keybinds parser
-│   ├── karamel-power-daemon.sh # Auto-switch power daemon
-│   └── screenshot.sh      # Screenshot utility
-└── assets/                # Wallpapers, Karamel branding
-    ├── karamel-cat.txt    # ASCII art for fastfetch
-    ├── karamel-logo.png   # Pixel art cat for launcher
-    ├── plymouth/          # Plymouth boot theme
-    │   ├── karamel.plymouth
-    │   ├── karamel.script
-    │   ├── logo.png       # Tiger-stripe KARAMEL logo
-    │   └── *.png          # Progress bar and dialog assets
-    └── wallpapers/        # Desktop wallpapers
+│       ├── 75-gaming.sh
+│       ├── 90-temporaire.sh
+│       └── 99-files.sh
+├── configs/
+│   ├── shared/             # Shared between compositors
+│   │   ├── DankMaterialShell/
+│   │   ├── dms-greeter/
+│   │   ├── fastfetch/
+│   │   ├── fish/
+│   │   ├── gtk-3.0/
+│   │   ├── gtk-4.0/
+│   │   ├── kitty/
+│   │   ├── qt5ct/
+│   │   ├── qt6ct/
+│   │   └── walker/
+│   ├── hyprland/
+│   │   ├── DankMaterialShell/
+│   │   ├── hypr/
+│   │   └── zed/
+│   ├── niri/
+│   │   ├── DankMaterialShell/
+│   │   └── niri/
+│   └── system/
+│       └── sudoers.d/
+├── scripts/
+│   ├── keybinds.sh
+│   ├── karamel-keybinds.sh
+│   ├── karamel-power-daemon.sh
+│   ├── karamel-workspace.sh
+│   └── screenshot.sh
+├── assets/
+│   ├── karamel-cat.txt
+│   ├── karamel-logo.png
+│   ├── plymouth/
+│   ├── screenshots/
+│   └── wallpapers/
+└── backups/
 ```
 
 ## Credits

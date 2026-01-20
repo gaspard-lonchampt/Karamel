@@ -171,7 +171,7 @@ The menu dynamically parses your compositor's config files:
 
 ## Plymouth Boot Theme
 
-Karamel includes a custom Plymouth boot splash theme featuring the "KARAMEL" logo with tiger-stripe colors inspired by the Karamel cat mascot.
+Karamel includes a custom Plymouth boot splash theme featuring the "KARAMEL" logo with tiger-stripe colors.
 
 ### Colors
 - Orange clair/beige: `#e8c8a0`
@@ -329,7 +329,7 @@ vim configs/shared/fish/config.fish
 # Edit DMS settings
 vim configs/shared/DankMaterialShell/settings.json
 
-# Edit fastfetch (Karamel cat ASCII)
+# Edit fastfetch
 vim configs/shared/fastfetch/config.jsonc
 ```
 
@@ -347,7 +347,7 @@ Or edit the compositor config to point to your own wallpaper.
 ### Karamel Assets
 
 Custom branding assets are located in `assets/`:
-- `karamel-logo.png` - Pixel art cat for DMS launcher
+- `karamel-logo.png` - Pixel art cat
 - `plymouth/logo.png` - Karamel text logo
 
 ![Karamel](assets/plymouth/logo.png)
@@ -399,15 +399,6 @@ niri-session
 
 # Check logs
 journalctl --user -xe
-```
-
-### Fastfetch not showing cat
-```bash
-# Test fastfetch
-fastfetch
-
-# Check if ASCII file exists
-cat ~/.config/karamel/assets/karamel-cat.txt
 ```
 
 ## Uninstallation
@@ -501,7 +492,6 @@ Karamel/
 ## Credits
 
 - **[BD-Configs](https://gitlab.com/theblackdon/karamel)** - Original dotfiles by TheBlackDon
-- **[Karamel](https://github.com/...)** - Pixel art assets and branding
 - **[DankMaterialShell (DMS)](https://github.com/dburian/DankMaterialShell)** - Beautiful Material Design shell for Wayland
 - **[Hyprland](https://hyprland.org/)** - Dynamic tiling Wayland compositor
 - **[Niri](https://github.com/YaLTeR/niri)** - Scrollable-tiling Wayland compositor

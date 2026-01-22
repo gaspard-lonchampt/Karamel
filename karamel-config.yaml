@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-13"
-  changelog: "Added alacritty config, switched to FiraCode Nerd Font"
-  version: "1.2.2"
+  last_updated: "2026-01-22"
+  changelog: "Added Google Chrome for Claude Code browser integration"
+  version: "1.2.3"
 
 colors:
   catppuccin:
@@ -36,6 +36,11 @@ compositors:
 applications:
   fish:
     config: configs/shared/fish/config.fish
+    plugin_manager: fisher
+    plugins:
+      - jorgebucaran/fisher           # Plugin manager
+      - jhillyerd/plugin-git          # Git aliases (gst, gco, gaa, gc, gp, gl, etc.)
+      - gazorby/fish-abbreviation-tips # Shows alias tips when typing full commands
     functions:
       - kpower: "Power management status/control"
       - kreload: "Reload compositor + regenerate keybinds"
@@ -299,6 +304,15 @@ bluetooth:
     - "pair XX:XX:XX:XX:XX:XX"
     - "connect XX:XX:XX:XX:XX:XX"
     - "trust XX:XX:XX:XX:XX:XX"
+  btusb_autosuspend_fix:
+    issue: "Clavier/périphériques BT se déconnectent après inactivité"
+    cause: "btusb autosuspend met le contrôleur USB en veille"
+    fix_file: /etc/modprobe.d/btusb-no-autosuspend.conf
+    fix_content: "options btusb enable_autosuspend=n"
+    bug_ref: "https://bugzilla.kernel.org/show_bug.cgi?id=199351"
+    reload_command: "sudo modprobe -r btusb && sudo modprobe btusb"
+    verify_command: "cat /sys/module/btusb/parameters/enable_autosuspend"
+    configured: "2026-01-20"
   framework_16:
     note: "Déconnexions occasionnelles avec écouteurs BT - redémarrer bluetooth.service si nécessaire"
   note: "DMS nécessite un redémarrage de session pour détecter les nouveaux adaptateurs"
@@ -403,6 +417,22 @@ power_management:
     TLP and power-profiles-daemon are NOT used.
     Install sudoers: sudo cp ~/Karamel/configs/system/sudoers.d/karamel-power /etc/sudoers.d/ && sudo chmod 440 /etc/sudoers.d/karamel-power
     Tested: 2026-01-12 - daemon correctly switches modes based on CPU load with 30s hysteresis
+
+idle_hibernate:
+  description: "Auto-hibernate after 20 minutes of inactivity"
+  timeout: 1200  # 20 minutes in seconds
+  action: "systemctl hibernate"
+  swap_size: "36 GB"
+  idle_inhibit: "Supported - video playback (Firefox, mpv, VLC) prevents idle trigger"
+  hyprland:
+    daemon: hypridle
+    config: configs/hyprland/hypr/hypridle.conf
+    note: "Native Hyprland idle daemon"
+  niri:
+    daemon: swayidle
+    config: ~/.config/swayidle/config
+    note: "Wayland-compatible idle daemon (not managed by Karamel symlinks)"
+  configured: "2026-01-13"
 
 gpu:
   hardware: NVIDIA GeForce RTX 5070 Max-Q (Blackwell)
@@ -524,3 +554,43 @@ ssh:
     github: github-cli (pacman)
     scalingo: scalingo-cli (script officiel)
   note: "Configuré le 2026-01-13"
+
+mobilic:
+  description: "Application web de suivi du temps de travail des transporteurs routiers"
+  project_dir: ~/Project/Mobilic
+  repositories:
+    frontend: mobilic (React)
+    backend: mobilic-api (Flask/Python)
+  packages:
+    pacman:
+      - pnpm              # Package manager Node.js
+      - python-pip        # Package manager Python
+      - python-pipenv     # Virtualenv + pip
+      - pyenv             # Gestion versions Python
+      - postgresql-libs   # Requis pour psycopg2
+    aur:
+      - fnm               # Fast Node Manager
+  python:
+    version: "3.13.11"
+    manager: pyenv
+    virtualenv: pipenv
+    compilation_fix: "CFLAGS=\"-std=gnu17\" pipenv install  # GCC 15 C23 bool keyword fix"
+  node:
+    version: "24"
+    manager: fnm
+  services_docker:
+    postgresql: "postgres:14.18-alpine (port 5432)"
+    redis: "redis:alpine (port 6379)"
+  fish_configs:
+    - ~/.config/fish/conf.d/pyenv.fish
+    - ~/.config/fish/conf.d/fnm.fish
+  commands:
+    start_services: "cd ~/Project/Mobilic/mobilic-api && docker compose up -d mobilic-db redis"
+    start_backend: "cd ~/Project/Mobilic/mobilic-api && pipenv run flask run"
+    start_frontend: "cd ~/Project/Mobilic/mobilic && REACT_APP_API_HOST=http://localhost:5000 pnpm start"
+    migrations: "cd ~/Project/Mobilic/mobilic-api && pipenv run flask db upgrade"
+  note: "Installé le 2026-01-22"
+
+flatpak:
+  packages:
+    - com.usebottles.bottles  # Wine environment manager for Windows software

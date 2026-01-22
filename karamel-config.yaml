@@ -6,7 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-22"
-  changelog: "Added Google Chrome for Claude Code browser integration"
+  changelog: "Added DBeaver for database management (Mobilic project)"
   version: "1.2.3"
 
 colors:

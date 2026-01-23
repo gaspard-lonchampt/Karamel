@@ -6,7 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-23"
-  changelog: "Added btop system monitor with Catppuccin theme"
+  changelog: "Added btop tab to mobilic workspace"
   version: "1.2.3"
 
 colors:
@@ -68,6 +68,7 @@ applications:
             - chrome-mcp: "claude --chrome"
             - app: "Frontend | Backend (split vertical)"
             - db: "Terminal | Docker (split vertical)"
+            - btop: "System monitor"
   kitty:
     config: configs/shared/kitty/kitty.conf
     shell: /usr/bin/fish

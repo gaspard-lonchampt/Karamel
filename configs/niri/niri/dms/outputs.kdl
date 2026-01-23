@@ -7,8 +7,8 @@ output "DP-3" {
 }
 
 output "eDP-1" {
-    mode "2560x1600@165.000"
-    scale 1.5
-    position x=2560 y=373
+    mode "1920x1200@165.000"
+    scale 1
+    position x=3200 y=390
 }
 

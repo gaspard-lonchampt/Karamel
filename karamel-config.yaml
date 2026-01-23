@@ -5,8 +5,8 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-22"
-  changelog: "Added DBeaver for database management (Mobilic project)"
+  last_updated: "2026-01-23"
+  changelog: "Added modular workspace command for project environments (workspace --mobilic)"
   version: "1.2.3"
 
 colors:
@@ -45,6 +45,22 @@ applications:
       - kpower: "Power management status/control"
       - kreload: "Reload compositor + regenerate keybinds"
       - kbinds: "Display keybinds (terminal or Walker)"
+      - workspace: "Launch project development environments"
+    workspace:
+      config_dir: ~/.config/workspace/
+      sessions_dir: ~/.config/kitty/sessions/
+      commands:
+        help: "workspace --help"
+        list: "workspace --list"
+        mobilic: "workspace --mobilic"
+      projects:
+        mobilic:
+          config: ~/.config/workspace/mobilic.fish
+          session: ~/.config/kitty/sessions/mobilic.conf
+          workspaces:
+            - ws1: "Dev (Kitty 3 panes + 2x Zed)"
+            - ws2: "Web/Tools (Zen Browser + DBeaver)"
+            - ws3: "Comms (Thunderbird + Mattermost)"
   kitty:
     config: configs/shared/kitty/kitty.conf
     shell: /usr/bin/fish

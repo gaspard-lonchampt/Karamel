@@ -6,7 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-23"
-  changelog: "Updated workspace command (workspace <name> / workspace close) with kitty tabs and dynamic workspaces"
+  changelog: "Added btop system monitor with Catppuccin theme"
   version: "1.2.3"
 
 colors:

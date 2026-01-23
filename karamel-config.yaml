@@ -602,7 +602,7 @@ mobilic:
     - ~/.config/fish/conf.d/fnm.fish
   commands:
     start_services: "cd ~/Project/Mobilic/mobilic-api && docker compose up -d mobilic-db redis"
-    start_backend: "cd ~/Project/Mobilic/mobilic-api && pipenv run flask run"
+    start_backend: "cd ~/Project/Mobilic/mobilic-api && DOTENV_FILE=.env.local pipenv run flask run --host 0.0.0.0"
     start_frontend: "cd ~/Project/Mobilic/mobilic && REACT_APP_API_HOST=http://localhost:5000 pnpm start"
     migrations: "cd ~/Project/Mobilic/mobilic-api && pipenv run flask db upgrade"
   note: "Installé le 2026-01-22"

@@ -6,7 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-23"
-  changelog: "Added btop tab to mobilic workspace"
+  changelog: "workspace close now stops docker, frontend and backend services"
   version: "1.2.3"
 
 colors:

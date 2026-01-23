@@ -137,11 +137,21 @@ parse_kitty() {
     [[ ! -f "$config" ]] && return
 
     echo "󰄛 ─────────────── KITTY TERMINAL ─────────────── 󰄛"
-    grep -E "^map.+#" "$config" | while read -r line; do
-        key=$(echo "$line" | awk '{print $2}' | sed 's/+/ + /g')
-        desc=$(echo "$line" | sed 's/.*# *//')
-        echo "  $key → $desc"
-    done
+    local prev_comment=""
+    while IFS= read -r line; do
+        # Store comment for next map line
+        if [[ "$line" =~ ^#[[:space:]]*(.+)$ ]]; then
+            prev_comment="${BASH_REMATCH[1]}"
+        # Parse map line and use previous comment as description
+        elif [[ "$line" =~ ^map[[:space:]]+([^[:space:]]+) ]] && [[ -n "$prev_comment" ]]; then
+            key="${BASH_REMATCH[1]}"
+            key=$(echo "$key" | sed 's/+/ + /g')
+            echo "  $key → $prev_comment"
+            prev_comment=""
+        else
+            prev_comment=""
+        fi
+    done < "$config"
 }
 
 generate_txt() {

@@ -626,7 +626,7 @@ voice_dictation:
   tool: WhisperNow
   description: "Offline voice-to-text with CUDA acceleration"
   repository: https://github.com/shinglyu/WhisperNow
-  install_dir: ~/Apps/WhisperNow
+  install_dir: ~/.local/share/whispernow
   script: ~/Karamel/scripts/whispernow.sh
   model: large-v3-turbo
   language: fr

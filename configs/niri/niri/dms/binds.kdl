@@ -35,9 +35,9 @@ binds {
         spawn "dms" "ipc" "call" "processlist" "toggle";
     }
 
-    // Voice-to-Text (WhisperNow)
+    // Voice-to-Text (WhisperNow) - Toggle: 1er appui = enregistre, 2e = transcrit
     Mod+Shift+D hotkey-overlay-title="Voice Dictation" {
-        spawn "kitty" "--class" "whispernow-floating" "/home/sarp/Karamel/scripts/whispernow.sh";
+        spawn "/home/sarp/Karamel/scripts/whispernow.sh";
     }
 
     // Audio

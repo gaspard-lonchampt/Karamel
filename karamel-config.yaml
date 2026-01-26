@@ -628,20 +628,31 @@ voice_dictation:
   repository: https://github.com/shinglyu/WhisperNow
   install_dir: ~/.local/share/whispernow
   script: ~/Karamel/scripts/whispernow.sh
+  toggle_script: ~/.local/share/whispernow/whispernow-toggle.py
   model: large-v3-turbo
   language: fr
   device: cuda
+  compute_type: float16
   output: wl-copy (clipboard)
   keybind: "Super + Shift + D"
+  mode: toggle  # 1er appui = enregistre, 2e = transcrit + copie clipboard
   packages:
-    - sox  # Audio recording
+    - sox  # Audio recording (with pulseaudio backend)
     - python  # Runtime
     - wl-clipboard  # Clipboard integration
+  python:
+    version: "3.12"
+    manager: pipenv
+    venv_path: ~/.local/share/virtualenvs/whispernow-wAI3AeRi
   pip_packages:
-    - faster-whisper  # Whisper backend (installed via uv)
-    - nvidia-cublas-cu12  # CUDA libs
-    - nvidia-cudnn-cu12  # CUDA libs
-  note: "Replaced voxtype-bin on 2026-01-26 for better offline CUDA support"
+    - faster-whisper  # Whisper backend
+    - nvidia-cublas-cu12  # CUDA cuBLAS
+    - nvidia-cudnn-cu12  # CUDA cuDNN
+  audio:
+    backend: pulseaudio
+    default_source: "Ryzen HD Audio Controller Digital Microphone"
+    note: "Digital mic works better than Stereo mic on Linux AMD Ryzen"
+  note: "Replaced voxtype-bin on 2026-01-26. Toggle mode with notifications."
 
 flatpak:
   packages:

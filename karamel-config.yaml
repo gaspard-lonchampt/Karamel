@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-23"
-  changelog: "workspace close now stops docker, frontend and backend services"
-  version: "1.2.3"
+  last_updated: "2026-01-26"
+  changelog: "replace voxtype with whispernow for offline voice dictation with cuda support"
+  version: "1.2.4"
 
 colors:
   catppuccin:
@@ -621,6 +621,27 @@ mobilic:
     start_frontend: "cd ~/Project/Mobilic/mobilic && REACT_APP_API_HOST=http://localhost:5000 pnpm start"
     migrations: "cd ~/Project/Mobilic/mobilic-api && pipenv run flask db upgrade"
   note: "Installé le 2026-01-22"
+
+voice_dictation:
+  tool: WhisperNow
+  description: "Offline voice-to-text with CUDA acceleration"
+  repository: https://github.com/shinglyu/WhisperNow
+  install_dir: ~/Apps/WhisperNow
+  script: ~/Karamel/scripts/whispernow.sh
+  model: large-v3-turbo
+  language: fr
+  device: cuda
+  output: wl-copy (clipboard)
+  keybind: "Super + Shift + D"
+  packages:
+    - sox  # Audio recording
+    - python  # Runtime
+    - wl-clipboard  # Clipboard integration
+  pip_packages:
+    - faster-whisper  # Whisper backend (installed via uv)
+    - nvidia-cublas-cu12  # CUDA libs
+    - nvidia-cudnn-cu12  # CUDA libs
+  note: "Replaced voxtype-bin on 2026-01-26 for better offline CUDA support"
 
 flatpak:
   packages:

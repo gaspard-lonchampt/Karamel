@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-26"
-  changelog: "replace voxtype with whispernow for offline voice dictation with cuda support"
-  version: "1.2.4"
+  last_updated: "2026-01-27"
+  changelog: "fix hibernation by adding resume hook and kernel parameter"
+  version: "1.2.5"
 
 colors:
   catppuccin:
@@ -195,8 +195,9 @@ boot:
   config: /boot/loader/loader.conf
   entry: /boot/loader/entries/karamel.conf
   entry_title: "Karamel"
-  kernel_options: "quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0 systemd.show_status=false"
+  kernel_options: "quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0 systemd.show_status=false resume=/dev/vg/swap"
   timeout: 1
+  resume_device: /dev/vg/swap
   note: "Renamed from arch.conf to karamel.conf for consistency"
 
 keybindings:
@@ -454,7 +455,12 @@ idle_hibernate:
   timeout: 1200  # 20 minutes in seconds
   action: "systemctl hibernate"
   swap_size: "36 GB"
+  swap_device: /dev/vg/swap
   idle_inhibit: "Supported - video playback (Firefox, mpv, VLC) prevents idle trigger"
+  system_config:
+    mkinitcpio_hooks: "base udev plymouth autodetect microcode modconf kms keyboard keymap consolefont block encrypt lvm2 resume filesystems fsck"
+    kernel_param: "resume=/dev/vg/swap"
+    note: "Hook resume must be after lvm2 in mkinitcpio.conf"
   hyprland:
     daemon: hypridle
     config: configs/hyprland/hypr/hypridle.conf
@@ -463,7 +469,7 @@ idle_hibernate:
     daemon: swayidle
     config: ~/.config/swayidle/config
     note: "Wayland-compatible idle daemon (not managed by Karamel symlinks)"
-  configured: "2026-01-13"
+  configured: "2026-01-27"
 
 gpu:
   hardware: NVIDIA GeForce RTX 5070 Max-Q (Blackwell)

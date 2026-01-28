@@ -50,7 +50,12 @@ deploy_shared_configs() {
         "fish"
         "gtk-3.0"
         "gtk-4.0"
+        "btop"
+        "alacritty"
+        "walker"
     )
+    # Note: DankMaterialShell is handled separately by merge_dms_configs
+    # Note: qt5ct, qt6ct, fastfetch need $HOME expansion (handled below)
 
     for config in "${shared_configs[@]}"; do
         if [ -d "$repo_dir/configs/shared/$config" ]; then
@@ -208,7 +213,6 @@ deploy_configurations() {
     if [ "$install_niri" = "true" ]; then
         deploy_niri_configs "$repo_dir"
         # If both are installed and we already merged for hyprland, skip niri merge
-        # Or we could merge both - for now, prefer the first one selected
         if [ "$install_hyprland" != "true" ]; then
             merge_dms_configs "$repo_dir" "niri"
         fi

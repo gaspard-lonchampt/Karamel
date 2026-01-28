@@ -2,7 +2,12 @@
   "currentThemeName": "custom",
   "currentThemeCategory": "registry",
   "customThemeFile": "/home/sarp/.config/DankMaterialShell/themes/catppuccin/theme.json",
-  "registryThemeVariants": {},
+  "registryThemeVariants": {
+    "catppuccin": {
+      "flavor": "mocha",
+      "accent": "rosewater"
+    }
+  },
   "matugenScheme": "scheme-content",
   "runUserMatugenTemplates": true,
   "matugenTargetMonitor": "",
@@ -13,15 +18,22 @@
   "cornerRadius": 2,
   "niriLayoutGapsOverride": -1,
   "niriLayoutRadiusOverride": 2,
-  "use24HourClock": false,
-  "showSeconds": false,
-  "useFahrenheit": true,
+  "niriLayoutBorderSize": -1,
+  "hyprlandLayoutGapsOverride": -1,
+  "hyprlandLayoutRadiusOverride": -1,
+  "hyprlandLayoutBorderSize": -1,
+  "mangoLayoutGapsOverride": -1,
+  "mangoLayoutRadiusOverride": -1,
+  "mangoLayoutBorderSize": -1,
+  "use24HourClock": true,
+  "showSeconds": true,
+  "useFahrenheit": false,
   "nightModeEnabled": false,
   "animationSpeed": 1,
   "customAnimationDuration": 500,
-  "wallpaperFillMode": "Fill",
+  "wallpaperFillMode": "TileHorizontally",
   "blurredWallpaperLayer": false,
-  "blurWallpaperOnOverview": false,
+  "blurWallpaperOnOverview": true,
   "showLauncherButton": true,
   "showWorkspaceSwitcher": true,
   "showFocusedWindow": true,
@@ -95,28 +107,68 @@
       "id": "doNotDisturb",
       "enabled": true,
       "width": 50
+    },
+    {
+      "id": "plugin_karamel-power",
+      "enabled": true,
+      "width": 50
     }
   ],
   "showWorkspaceIndex": true,
+  "showWorkspaceName": false,
   "showWorkspacePadding": false,
   "workspaceScrolling": false,
   "showWorkspaceApps": false,
   "maxWorkspaceIcons": 2,
-  "workspacesPerMonitor": true,
+  "groupWorkspaceApps": true,
+  "workspaceFollowFocus": false,
   "showOccupiedWorkspacesOnly": false,
   "reverseScrolling": false,
   "dwlShowAllTags": true,
+  "workspaceColorMode": "default",
+  "workspaceUnfocusedColorMode": "default",
+  "workspaceUrgentColorMode": "default",
+  "workspaceFocusedBorderEnabled": false,
+  "workspaceFocusedBorderColor": "primary",
+  "workspaceFocusedBorderThickness": 2,
   "workspaceNameIcons": {},
   "waveProgressEnabled": true,
   "scrollTitleEnabled": true,
   "audioVisualizerEnabled": true,
-  "audioScrollEnabled": true,
+  "audioScrollMode": "volume",
   "clockCompactMode": false,
   "focusedWindowCompactMode": false,
   "runningAppsCompactMode": true,
   "keyboardLayoutNameCompactMode": false,
   "runningAppsCurrentWorkspace": false,
   "runningAppsGroupByApp": false,
+  "appIdSubstitutions": [
+    {
+      "pattern": "Spotify",
+      "replacement": "spotify",
+      "type": "exact"
+    },
+    {
+      "pattern": "beepertexts",
+      "replacement": "beeper",
+      "type": "exact"
+    },
+    {
+      "pattern": "home assistant desktop",
+      "replacement": "homeassistant-desktop",
+      "type": "exact"
+    },
+    {
+      "pattern": "com.transmissionbt.transmission",
+      "replacement": "transmission-gtk",
+      "type": "contains"
+    },
+    {
+      "pattern": "^steam_app_(\\d+)$",
+      "replacement": "steam_icon_$1",
+      "type": "regex"
+    }
+  ],
   "centeringMode": "index",
   "clockDateFormat": "",
   "lockDateFormat": "",
@@ -127,15 +179,29 @@
   "appLauncherGridColumns": 4,
   "spotlightCloseNiriOverview": true,
   "niriOverviewOverlayEnabled": true,
-  "weatherLocation": "New York, NY",
-  "weatherCoordinates": "40.7128,-74.0060",
   "useAutoLocation": true,
   "weatherEnabled": true,
-  "networkPreference": "auto",
+  "networkPreference": "ethernet",
   "vpnLastConnected": "",
-  "iconTheme": "Yaru-sage",
+  "iconTheme": "System Default",
+  "cursorSettings": {
+    "theme": "System Default",
+    "size": 24,
+    "niri": {
+      "hideWhenTyping": false,
+      "hideAfterInactiveMs": 0
+    },
+    "hyprland": {
+      "hideOnKeyPress": false,
+      "hideOnTouch": false,
+      "inactiveTimeout": 1
+    },
+    "dwl": {
+      "cursorHideTimeout": 0
+    }
+  },
   "launcherLogoMode": "custom",
-  "launcherLogoCustomPath": "$HOME/.config/karamel/assets/karamel-logo.png",
+  "launcherLogoCustomPath": "/home/sarp/.config/karamel/assets/karamel-logo.png",
   "launcherLogoColorOverride": "primary",
   "launcherLogoColorInvertOnMode": false,
   "launcherLogoBrightness": 0.5,
@@ -143,7 +209,7 @@
   "launcherLogoSizeOffset": 0,
   "fontFamily": "Inter Variable",
   "monoFontFamily": "FiraCode Nerd Font",
-  "fontWeight": 400,
+  "fontWeight": 700,
   "fontScale": 1,
   "notepadUseMonospace": true,
   "notepadFontFamily": "",
@@ -156,25 +222,31 @@
   "soundNewNotification": true,
   "soundVolumeChanged": true,
   "soundPluggedIn": true,
-  "acMonitorTimeout": 1800,
-  "acLockTimeout": 1200,
+  "acMonitorTimeout": 900,
+  "acLockTimeout": 900,
   "acSuspendTimeout": 0,
-  "acSuspendBehavior": 0,
+  "acSuspendBehavior": 1,
   "acProfileName": "",
-  "batteryMonitorTimeout": 0,
-  "batteryLockTimeout": 0,
+  "batteryMonitorTimeout": 900,
+  "batteryLockTimeout": 900,
   "batterySuspendTimeout": 0,
-  "batterySuspendBehavior": 0,
+  "batterySuspendBehavior": 1,
   "batteryProfileName": "",
   "batteryChargeLimit": 100,
   "lockBeforeSuspend": false,
   "loginctlLockIntegration": true,
   "fadeToLockEnabled": true,
   "fadeToLockGracePeriod": 5,
+  "fadeToDpmsEnabled": true,
+  "fadeToDpmsGracePeriod": 5,
   "launchPrefix": "",
   "brightnessDevicePins": {},
-  "wifiNetworkPins": {},
-  "bluetoothDevicePins": {},
+  "wifiNetworkPins": {
+    "preferredWifi": "SFR_7670"
+  },
+  "bluetoothDevicePins": {
+    "preferredDevice": "F8:5C:7E:88:21:CB"
+  },
   "audioInputDevicePins": {},
   "audioOutputDevicePins": {},
   "gtkThemingEnabled": true,
@@ -184,6 +256,8 @@
   "runDmsMatugenTemplates": true,
   "matugenTemplateGtk": true,
   "matugenTemplateNiri": true,
+  "matugenTemplateHyprland": true,
+  "matugenTemplateMangowc": true,
   "matugenTemplateQt5ct": true,
   "matugenTemplateQt6ct": true,
   "matugenTemplateFirefox": true,
@@ -200,8 +274,8 @@
   "matugenTemplateDgop": true,
   "matugenTemplateKcolorscheme": true,
   "matugenTemplateVscode": true,
-  "showDock": false,
-  "dockAutoHide": false,
+  "showDock": true,
+  "dockAutoHide": true,
   "dockGroupByApp": true,
   "dockOpenOnOverview": false,
   "dockPosition": 1,
@@ -209,8 +283,8 @@
   "dockBottomGap": -20,
   "dockMargin": 9,
   "dockIconSize": 48,
-  "dockIndicatorStyle": "line",
-  "dockBorderEnabled": true,
+  "dockIndicatorStyle": "circle",
+  "dockBorderEnabled": false,
   "dockBorderColor": "primary",
   "dockBorderOpacity": 0.58,
   "dockBorderThickness": 2,
@@ -222,16 +296,23 @@
   "lockScreenShowTime": true,
   "lockScreenShowDate": true,
   "lockScreenShowProfileImage": true,
-  "lockScreenShowPasswordField": true,
+  "lockScreenShowPasswordField": false,
   "enableFprint": false,
   "maxFprintTries": 3,
   "lockScreenActiveMonitor": "all",
   "lockScreenInactiveColor": "#000000",
+  "lockScreenNotificationMode": 0,
   "hideBrightnessSlider": false,
   "notificationTimeoutLow": 5000,
   "notificationTimeoutNormal": 5000,
   "notificationTimeoutCritical": 0,
   "notificationPopupPosition": 0,
+  "notificationHistoryEnabled": true,
+  "notificationHistoryMaxCount": 50,
+  "notificationHistoryMaxAgeDays": 7,
+  "notificationHistorySaveLow": true,
+  "notificationHistorySaveNormal": true,
+  "notificationHistorySaveCritical": true,
   "osdAlwaysShowValue": false,
   "osdPosition": 5,
   "osdVolumeEnabled": true,
@@ -244,7 +325,13 @@
   "osdAudioOutputEnabled": true,
   "powerActionConfirm": true,
   "powerActionHoldDuration": 0.5,
-  "powerMenuActions": ["reboot", "logout", "poweroff", "lock", "restart"],
+  "powerMenuActions": [
+    "reboot",
+    "logout",
+    "poweroff",
+    "lock",
+    "restart"
+  ],
   "powerMenuDefaultAction": "logout",
   "powerMenuGridLayout": false,
   "customPowerActionLock": "",
@@ -255,7 +342,7 @@
   "customPowerActionPowerOff": "",
   "updaterHideWidget": false,
   "updaterUseCustomCommand": true,
-  "updaterCustomCommand": "kitty -e yay -Syu",
+  "updaterCustomCommand": "kitty dcli update",
   "updaterTerminalAdditionalParams": "",
   "displayNameMode": "system",
   "screenPreferences": {
@@ -264,12 +351,20 @@
         "name": "DP-1",
         "model": "CU34G2XP"
       }
+    ],
+    "wallpaper": [
+      "all"
     ]
   },
   "showOnLastDisplay": {
     "dock": true
   },
-  "niriOutputSettings": {},
+  "niriOutputSettings": {
+    "DP-3": {
+      "focusAtStartup": false,
+      "hotCorners": null
+    }
+  },
   "hyprlandOutputSettings": {},
   "barConfigs": [
     {
@@ -277,10 +372,36 @@
       "name": "Main Bar",
       "enabled": true,
       "position": 0,
-      "screenPreferences": ["all"],
-      "showOnLastDisplay": true,
-      "leftWidgets": ["launcherButton", "workspaceSwitcher", "focusedWindow"],
-      "centerWidgets": ["music", "clock", "weather"],
+      "screenPreferences": [
+        "all"
+      ],
+      "showOnLastDisplay": false,
+      "leftWidgets": [
+        {
+          "id": "launcherButton",
+          "enabled": true
+        },
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true
+        },
+        {
+          "id": "focusedWindow",
+          "enabled": true
+        }
+      ],
+      "centerWidgets": [
+        {
+          "id": "music",
+          "enabled": true,
+          "mediaSize": 0
+        },
+        {
+          "id": "clock",
+          "enabled": true
+        },
+        "weather"
+      ],
       "rightWidgets": [
         {
           "id": "systemUpdate",
@@ -300,6 +421,11 @@
         },
         {
           "id": "memUsage",
+          "enabled": true,
+          "showSwap": true
+        },
+        {
+          "id": "battery",
           "enabled": true
         },
         {
@@ -347,7 +473,10 @@
       ],
       "showOnLastDisplay": false,
       "leftWidgets": [],
-      "centerWidgets": ["clock", "weather"],
+      "centerWidgets": [
+        "clock",
+        "weather"
+      ],
       "rightWidgets": [
         {
           "id": "powerMenuButton",
@@ -467,8 +596,10 @@
   "desktopClockY": -1,
   "desktopClockWidth": 280,
   "desktopClockHeight": 180,
-  "desktopClockDisplayPreferences": ["all"],
-  "systemMonitorEnabled": true,
+  "desktopClockDisplayPreferences": [
+    "all"
+  ],
+  "systemMonitorEnabled": false,
   "systemMonitorShowHeader": true,
   "systemMonitorTransparency": 0.8,
   "systemMonitorColorMode": "primary",
@@ -504,7 +635,9 @@
   "systemMonitorY": -1,
   "systemMonitorWidth": 320,
   "systemMonitorHeight": 480,
-  "systemMonitorDisplayPreferences": ["all"],
+  "systemMonitorDisplayPreferences": [
+    "all"
+  ],
   "systemMonitorVariants": [],
   "desktopWidgetPositions": {
     "desktopClock": {
@@ -530,7 +663,7 @@
       "id": "dw_clock_primary",
       "widgetType": "desktopClock",
       "name": "Desktop Clock",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "style": "digital",
         "transparency": 0.8,
@@ -551,7 +684,9 @@
         "showDate": true,
         "showAnalogNumbers": false,
         "showAnalogSeconds": true,
-        "displayPreferences": ["all"]
+        "displayPreferences": [
+          "all"
+        ]
       },
       "positions": {
         "DP-2": {
@@ -561,6 +696,12 @@
         "DP-1": {
           "x": 15.66015625,
           "y": 56.6328125
+        },
+        "eDP-1": {
+          "x": 683.80078125,
+          "y": 447.84765625,
+          "width": 316.6640625,
+          "height": 200.25390625
         }
       }
     },
@@ -568,7 +709,7 @@
       "id": "dw_sysmon_primary",
       "widgetType": "systemMonitor",
       "name": "System Monitor",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "showHeader": true,
         "transparency": 0.8,
@@ -601,7 +742,9 @@
         "topProcessSortBy": "cpu",
         "layoutMode": "auto",
         "graphInterval": 60,
-        "displayPreferences": ["all"]
+        "displayPreferences": [
+          "all"
+        ]
       },
       "positions": {
         "DP-2": {
@@ -611,9 +754,20 @@
         "DP-1": {
           "x": 3071.8828125,
           "y": 53.01171875
+        },
+        "eDP-1": {
+          "x": 0,
+          "y": 0,
+          "width": 1707,
+          "height": 180
         }
       }
     }
   ],
-  "configVersion": 4
+  "builtInPluginSettings": {
+    "dms_settings_search": {
+      "trigger": "?"
+    }
+  },
+  "configVersion": 5
 }

@@ -1,0 +1,12 @@
+{
+    "id": "karamel-power",
+    "name": "Karamel Power",
+    "description": "Framework 16 power management (chill/notso/furious modes)",
+    "version": "1.0.0",
+    "author": "Karamel",
+    "type": "widget",
+    "capabilities": ["control-center"],
+    "component": "./KaramelPower.qml",
+    "icon": "bolt",
+    "permissions": ["settings_read", "settings_write"]
+}

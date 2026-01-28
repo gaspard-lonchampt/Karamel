@@ -6,8 +6,8 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-28"
-  changelog: "fix workspace close to use docker compose stop instead of down to preserve PostgreSQL data"
-  version: "1.2.6"
+  changelog: "fix(power): use sysfs instead of ectool for battery charge control, add cycle command, remove fw-ectool-git dependency"
+  version: "1.2.7"
 
 colors:
   catppuccin:

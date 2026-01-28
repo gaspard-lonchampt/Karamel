@@ -6,7 +6,7 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-28"
-  changelog: "fix(power): use sysfs instead of ectool for battery charge control, add cycle command, remove fw-ectool-git dependency"
+  changelog: "chore(aconfmgr): ignore scalingo binary in /usr/local/bin"
   version: "1.2.7"
 
 colors:

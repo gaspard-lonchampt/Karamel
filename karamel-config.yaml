@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-27"
-  changelog: "fix hibernation by adding resume hook and kernel parameter"
-  version: "1.2.5"
+  last_updated: "2026-01-28"
+  changelog: "fix workspace close to use docker compose stop instead of down to preserve PostgreSQL data"
+  version: "1.2.6"
 
 colors:
   catppuccin:
@@ -618,6 +618,9 @@ mobilic:
   services_docker:
     postgresql: "postgres:14.18-alpine (port 5432)"
     redis: "redis:alpine (port 6379)"
+  docker_volumes:
+    note: "PostgreSQL image creates anonymous volumes - use 'docker compose stop' not 'down' to preserve data"
+    workspace_close: "docker compose stop (preserves containers and anonymous volumes)"
   fish_configs:
     - ~/.config/fish/conf.d/pyenv.fish
     - ~/.config/fish/conf.d/fnm.fish

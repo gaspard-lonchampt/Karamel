@@ -26,4 +26,5 @@ AddPackage swayidle # Idle management daemon for Wayland
 AddPackage hypridle # hyprland's idle daemon
 AddPackage mako # Lightweight notification daemon for Wayland
 AddPackage nwg-displays # Output management utility for sway and Hyprland Wayland compositors
+AddPackage --foreign wdisplays # GUI display configurator for wlroots compositors
 AddPackage brightnessctl # Lightweight brightness control tool

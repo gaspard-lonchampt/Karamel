@@ -7,7 +7,13 @@ AddPackage eza # A modern replacement for ls (community fork of exa)
 AddPackage vi # The original ex/vi text editor
 AddPackage vim # Vi Improved, a highly configurable, improved version of the vi text editor
 AddPackage helix # A post-modern modal text editor
-AddPackage zed # A high-performance, multiplayer code editor from the creators of Atom and Tree-sitter
+# zed installed manually via binary
+
+# === TERMINAL TOOLS ===
+AddPackage fzf # Command-line fuzzy finder
+AddPackage htop # Interactive process viewer
+AddPackage less # A terminal based program for viewing text files
+AddPackage wtype # xdotool type for wayland
 
 # === LANCEURS ===
 AddPackage fuzzel # Application launcher for wlroots based Wayland compositors

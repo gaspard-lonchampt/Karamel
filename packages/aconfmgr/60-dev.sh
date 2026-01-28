@@ -3,6 +3,7 @@ AddPackage git # the fast distributed version control system
 AddPackage cmake # A cross-platform open-source make system
 AddPackage meson # High productivity build system
 AddPackage jq # Command-line JSON processor
+AddPackage wev # Wayland event viewer (debug keybinds)
 
 # === AUR HELPERS ===
 AddPackage --foreign yay # Yet another yogurt. Pacman wrapper and AUR helper written in go.

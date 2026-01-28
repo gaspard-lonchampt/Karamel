@@ -3,4 +3,4 @@
 # (power-profiles-daemon et TLP ne sont PAS utilisés)
 
 # CPU frequency management - auto-switch powersave/performance selon batterie
-AddPackage auto-cpufreq  # Automatic CPU speed & power optimizer
+AddPackage --foreign auto-cpufreq  # Automatic CPU speed & power optimizer

@@ -2,9 +2,9 @@
 # Install: sudo cp ~/Karamel/configs/system/sudoers.d/karamel-power /etc/sudoers.d/
 # Then: sudo chmod 440 /etc/sudoers.d/karamel-power
 
-# Battery charge thresholds via sysfs
-sarp ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/class/power_supply/BAT1/charge_control_start_threshold
-sarp ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/class/power_supply/BAT1/charge_control_end_threshold
+# Framework tool for battery charge limit
+sarp ALL=(ALL) NOPASSWD: /usr/bin/framework_tool --charge-limit *
+sarp ALL=(ALL) NOPASSWD: /usr/bin/framework_tool --charge-limit
 
 # Platform profile for CPU power management
 sarp ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/firmware/acpi/platform_profile

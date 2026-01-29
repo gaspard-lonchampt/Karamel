@@ -24,7 +24,7 @@ if not contains $HOME/.npm-global/bin $PATH
     set -gx PATH $HOME/.npm-global/bin $PATH
 end
 
-# aconfmgr reminder for pacman/yay
+# aconfmgr reminder for pacman/paru
 function pacman --wraps=pacman
     echo "╭───────────────────────────────────────────────────────╮"
     echo "│ 📦 aconfmgr - Add package to the right file:          │"
@@ -36,7 +36,7 @@ function pacman --wraps=pacman
     command pacman $argv
 end
 
-function yay --wraps=yay
+function paru --wraps=paru
     echo "╭───────────────────────────────────────────────────────╮"
     echo "│ 📦 aconfmgr - Add package to the right file:          │"
     echo "│   ~/.config/aconfmgr/XX-category.sh                   │"
@@ -44,6 +44,6 @@ function yay --wraps=yay
     echo "│                                                       │"
     echo "│ Or: aconfmgr save → sort 99-unsorted.sh → clear it    │"
     echo "╰───────────────────────────────────────────────────────╯"
-    command yay $argv
+    command paru $argv
 end
 

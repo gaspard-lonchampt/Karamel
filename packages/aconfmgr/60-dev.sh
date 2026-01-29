@@ -23,8 +23,7 @@ AddPackage --foreign fnm # Fast and simple Node.js version manager
 AddPackage postgresql-libs # Client libraries for PostgreSQL
 
 # === AUR HELPERS ===
-AddPackage --foreign yay # Yet another yogurt. Pacman wrapper and AUR helper written in go.
-AddPackage --foreign yay-debug # Detached debugging symbols for yay
+AddPackage --foreign paru # Feature packed AUR helper written in Rust
 
 # === SYSTEM CONFIG ===
 AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux

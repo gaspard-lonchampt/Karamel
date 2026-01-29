@@ -37,8 +37,8 @@
 # set EDITOR nvim
 set EDITOR code
 
-# set aurhelper yay
-set aurhelper yay
+# set aurhelper paru
+set aurhelper paru
 
 
 

@@ -6,8 +6,8 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-01-29"
-  changelog: "fix(power): use framework_tool instead of sysfs for battery charge control"
-  version: "1.2.9"
+  changelog: "chore(aur): replace yay with paru"
+  version: "1.2.10"
 
 colors:
   catppuccin:

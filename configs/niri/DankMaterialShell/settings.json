@@ -260,7 +260,7 @@
   "customPowerActionPowerOff": "",
   "updaterHideWidget": false,
   "updaterUseCustomCommand": true,
-  "updaterCustomCommand": "kitty -e yay -Syu",
+  "updaterCustomCommand": "kitty -e paru -Syu",
   "updaterTerminalAdditionalParams": "",
   "displayNameMode": "system",
   "screenPreferences": {

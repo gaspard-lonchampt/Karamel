@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-28"
-  changelog: "chore(aconfmgr): ignore scalingo binary in /usr/local/bin"
-  version: "1.2.7"
+  last_updated: "2026-01-29"
+  changelog: "fix(fish): remove -i flag from Scalingo db-tunnel aliases to use ssh-agent"
+  version: "1.2.8"
 
 colors:
   catppuccin:

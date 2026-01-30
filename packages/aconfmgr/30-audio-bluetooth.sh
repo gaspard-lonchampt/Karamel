@@ -7,7 +7,7 @@ AddPackage playerctl # MPRIS media player controller (for Fn media keys)
 # === BLUETOOTH ===
 AddPackage bluez # Daemons for the bluetooth protocol stack
 AddPackage bluez-utils # Development and debugging utilities for the bluetooth protocol stack
-AddPackage blueman # GTK+ Bluetooth Manager
+AddPackage blueman # Pairing agent for DMS Shell (XDG autostart: blueman-applet)
 
 # === RÉSEAU ===
 AddPackage networkmanager # Network connection manager and user applications

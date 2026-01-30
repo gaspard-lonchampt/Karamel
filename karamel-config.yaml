@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-29"
-  changelog: "chore(aur): replace yay with paru"
-  version: "1.2.10"
+  last_updated: "2026-01-30"
+  changelog: "fix(bluetooth): add blueman-applet for pairing agent"
+  version: "1.2.11"
 
 colors:
   catppuccin:
@@ -326,10 +326,22 @@ bluetooth:
   packages:
     - bluez
     - bluez-utils
+    - blueman  # Pairing agent (requis pour DMS Shell)
   service: bluetooth.service
   enable_command: "sudo systemctl enable --now bluetooth"
   cli_tool: bluetoothctl
-  gui_tool: "DMS Control Center"
+  gui_tools:
+    dms: "DMS Control Center (scan/connect only)"
+    blueman: "blueman-manager (full pairing support)"
+  pairing_agent:
+    package: blueman
+    daemon: blueman-applet
+    autostart: /etc/xdg/autostart/blueman.desktop
+    note: |
+      DMS Shell utilise D-Bus/BlueZ directement mais son agent de pairing intégré
+      est défaillant. blueman-applet fournit un agent fonctionnel qui intercepte
+      les demandes de pairing même depuis l'UI de DMS.
+      XDG autostart fonctionne avec Hyprland et Niri.
   pairing_commands:
     - "power on"
     - "scan on"
@@ -347,7 +359,8 @@ bluetooth:
     configured: "2026-01-20"
   framework_16:
     note: "Déconnexions occasionnelles avec écouteurs BT - redémarrer bluetooth.service si nécessaire"
-  note: "DMS nécessite un redémarrage de session pour détecter les nouveaux adaptateurs"
+  configured: "2026-01-30"
+  note: "DMS nécessite blueman-applet pour le pairing. Sans lui, seuls scan/connect fonctionnent."
 
 power_management:
   backend: ectool chargecontrol + platform_profile + auto-cpufreq

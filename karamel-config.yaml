@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-30"
-  changelog: "fix(bluetooth): add blueman-applet for pairing agent"
-  version: "1.2.11"
+  last_updated: "2026-01-31"
+  changelog: "feat(storage): add nvme-cli and smartmontools for Samsung 990 PRO monitoring"
+  version: "1.2.12"
 
 colors:
   catppuccin:

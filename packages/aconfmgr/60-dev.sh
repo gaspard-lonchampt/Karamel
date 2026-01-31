@@ -25,5 +25,9 @@ AddPackage postgresql-libs # Client libraries for PostgreSQL
 # === AUR HELPERS ===
 AddPackage --foreign paru # Feature packed AUR helper written in Rust
 
+# === STORAGE ===
+AddPackage nvme-cli # NVMe management command line interface
+AddPackage smartmontools # Control and monitor S.M.A.R.T. enabled drives
+
 # === SYSTEM CONFIG ===
 AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux

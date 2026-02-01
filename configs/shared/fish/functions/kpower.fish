@@ -28,6 +28,8 @@ function kpower --description "Karamel power management (Framework 16)"
                 case chill
                     kpower notso
                 case notso
+                    kpower gaming
+                case gaming
                     kpower furious
                 case '*'
                     kpower chill

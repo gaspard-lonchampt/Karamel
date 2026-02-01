@@ -5,8 +5,8 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-01-31"
-  changelog: "feat(storage): add nvme-cli and smartmontools for Samsung 990 PRO monitoring"
+  last_updated: "2026-02-01"
+  changelog: "feat(power): add gaming mode (80% charge limit + performance profile)"
   version: "1.2.12"
 
 colors:
@@ -398,10 +398,15 @@ power_management:
       sustainer: "0-100%"
       platform_profile: performance
       description: "Max performance - full charge"
+    gaming:
+      icon: "sports_esports"
+      sustainer: "60-80%"
+      platform_profile: performance
+      description: "Gaming on AC - performance + battery preservation"
   kpower_function:
     commands:
       status: "kpower status"
-      set_mode: "kpower {chill|notso|furious}"
+      set_mode: "kpower {chill|notso|furious|gaming}"
     status_output:
       - "Battery: capacity% (status)"
       - "Profile: platform_profile"

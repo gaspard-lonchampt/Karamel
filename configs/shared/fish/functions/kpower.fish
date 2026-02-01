@@ -17,6 +17,11 @@ function kpower --description "Karamel power management (Framework 16)"
             echo "performance" | sudo tee /sys/firmware/acpi/platform_profile > /dev/null
             echo "furious" > $state_file
             notify-send -u low "Karamel" "🔥 Mode furious (100%, performance)"
+        case gaming
+            sudo framework_tool --charge-limit 80
+            echo "performance" | sudo tee /sys/firmware/acpi/platform_profile > /dev/null
+            echo "gaming" > $state_file
+            notify-send -u low "Karamel" "🎮 Mode gaming (80%, performance)"
         case cycle
             set -l current (cat $state_file 2>/dev/null; or echo "furious")
             switch $current
@@ -38,6 +43,6 @@ function kpower --description "Karamel power management (Framework 16)"
             echo "🔌 Charge limit: $charge_limit%"
             echo "🤖 Mode: $daemon_mode"
         case '*'
-            echo "Usage: kpower {chill|notso|furious|cycle|status}"
+            echo "Usage: kpower {chill|notso|furious|gaming|cycle|status}"
     end
 end

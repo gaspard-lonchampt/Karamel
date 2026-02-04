@@ -6,8 +6,8 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-02-04"
-  changelog: "fix(kitty): limit broadcast to current tab only"
-  version: "1.2.13"
+  changelog: "chore(power): remove karamel-power-daemon"
+  version: "1.2.14"
 
 colors:
   catppuccin:
@@ -130,7 +130,6 @@ gtk:
 scripts:
   keybinds_menu: scripts/keybinds.sh
   keybinds_parser: scripts/karamel-keybinds.sh
-  power_daemon: scripts/karamel-power-daemon.sh
   screenshot: scripts/screenshot.sh
   installer: install.sh
   verifier: verify-install.sh
@@ -370,8 +369,6 @@ power_management:
     - auto-cpufreq   # CPU frequency management on battery
   files:
     fish_function: ~/.config/fish/functions/kpower.fish
-    daemon_script: ~/Karamel/scripts/karamel-power-daemon.sh
-    systemd_service: ~/.config/systemd/user/karamel-power.service
     sudoers: /etc/sudoers.d/karamel-power
     sudoers_source: ~/Karamel/configs/system/sudoers.d/karamel-power
     dms_plugin: ~/.config/DankMaterialShell/plugins/karamel-power/
@@ -411,26 +408,7 @@ power_management:
       - "Battery: capacity% (status)"
       - "Profile: platform_profile"
       - "Sustainer: start-end%"
-      - "Daemon: current_mode"
     note: "Status reads from sysfs (no sudo required)"
-  daemon:
-    description: "Auto-switch mode based on CPU/GPU load (AC power only)"
-    state_file: /tmp/karamel-power-mode
-    cpu_detection: "Dual sampling from /proc/stat (1s interval)"
-    gpu_detection: /sys/class/drm/card1/device/gpu_busy_percent
-    check_interval: "~6s (5s sleep + 1s CPU sampling)"
-    thresholds:
-      chill: "load < 30%"
-      notso: "load 30-70%"
-      furious: "load > 70%"
-    hysteresis: "6 consecutive checks (~30s) before switching"
-    commands:
-      enable: "systemctl --user enable --now karamel-power"
-      status: "systemctl --user status karamel-power"
-      logs: "journalctl --user -u karamel-power -f"
-    behavior:
-      on_ac: "Active - monitors load and auto-switches modes"
-      on_battery: "Paused - auto-cpufreq handles power management"
   dms_integration:
     widget: "Karamel Power"
     location: "Control Center"
@@ -460,13 +438,12 @@ power_management:
     - "sarp ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/firmware/acpi/platform_profile"
   note: |
     Framework 16 uses EC "battery sustainer" for START/END thresholds.
-    Complete architecture:
-    - On AC: karamel-power daemon auto-switches sustainer+profile based on CPU/GPU load
-    - On battery: auto-cpufreq handles CPU automatically (powersave, turbo off)
+    Architecture:
+    - kpower: manual mode switching (chill/notso/furious/gaming)
+    - auto-cpufreq: automatic CPU frequency management based on power source
     - platform_profile: Controls TDP envelope (low-power/balanced/performance)
     TLP and power-profiles-daemon are NOT used.
     Install sudoers: sudo cp ~/Karamel/configs/system/sudoers.d/karamel-power /etc/sudoers.d/ && sudo chmod 440 /etc/sudoers.d/karamel-power
-    Tested: 2026-01-12 - daemon correctly switches modes based on CPU load with 30s hysteresis
 
 idle_hibernate:
   description: "Auto-hibernate after 20 minutes of inactivity"

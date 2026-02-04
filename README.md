@@ -477,7 +477,6 @@ Karamel/
 ├── scripts/
 │   ├── keybinds.sh
 │   ├── karamel-keybinds.sh
-│   ├── karamel-power-daemon.sh
 │   ├── karamel-workspace.sh
 │   └── screenshot.sh
 ├── assets/

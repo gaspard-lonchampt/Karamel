@@ -6,8 +6,8 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-02-04"
-  changelog: "feat(ai): add ollama + opencode for local AI coding"
-  version: "1.2.15"
+  changelog: "chore(config): add shell-switch to Karamel symlinks"
+  version: "1.2.16"
 
 colors:
   catppuccin:
@@ -104,6 +104,11 @@ applications:
     theme: configs/shared/walker/themes/karamel/style.css
   dms:
     settings: configs/shared/DankMaterialShell/settings.json
+  shell-switch:
+    config: configs/shared/shell-switch/
+    command: shell-switch
+    description: "Interactive shell switcher (bash/zsh/fish)"
+    source: "https://gitlab.com/theblackdon/shell-switch"
 
 monitors:
   note: "Using native compositor configs (DMS display settings disabled due to positioning bug)"

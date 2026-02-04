@@ -6,8 +6,8 @@ project:
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
   last_updated: "2026-02-04"
-  changelog: "chore(power): remove karamel-power-daemon"
-  version: "1.2.14"
+  changelog: "feat(ai): add ollama + opencode for local AI coding"
+  version: "1.2.15"
 
 colors:
   catppuccin:
@@ -661,3 +661,17 @@ voice_dictation:
 flatpak:
   packages:
     - com.usebottles.bottles  # Wine environment manager for Windows software
+
+local_ai:
+  runtime: ollama-cuda
+  agent: opencode
+  model: qwen2.5-coder:7b
+  service: ollama.service (system)
+  commands:
+    start: "sudo systemctl start ollama"
+    stop: "sudo systemctl stop ollama"
+    status: "systemctl status ollama"
+    pull_model: "ollama pull qwen2.5-coder:7b"
+    list_models: "ollama list"
+    agent: "opencode"
+  note: "Installed 2026-02-04. OpenCode uses Ollama as local LLM backend."

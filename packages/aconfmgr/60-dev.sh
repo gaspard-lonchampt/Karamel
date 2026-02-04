@@ -29,5 +29,9 @@ AddPackage --foreign paru # Feature packed AUR helper written in Rust
 AddPackage nvme-cli # NVMe management command line interface
 AddPackage smartmontools # Control and monitor S.M.A.R.T. enabled drives
 
+# === LOCAL AI ===
+AddPackage ollama-cuda # LLM runtime with CUDA support
+AddPackage --foreign opencode-bin # AI coding agent for terminal
+
 # === SYSTEM CONFIG ===
 AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux

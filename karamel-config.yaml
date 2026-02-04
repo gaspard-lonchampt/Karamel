@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-02-01"
-  changelog: "feat(power): add gaming mode to cycle rotation"
-  version: "1.2.12"
+  last_updated: "2026-02-04"
+  changelog: "fix(kitty): limit broadcast to current tab only"
+  version: "1.2.13"
 
 colors:
   catppuccin:

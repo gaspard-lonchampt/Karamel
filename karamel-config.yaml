@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-02-04"
-  changelog: "chore(config): add shell-switch to Karamel symlinks"
-  version: "1.2.16"
+  last_updated: "2026-02-05"
+  changelog: "feat(noctalia): centralize config and add Karamel icon"
+  version: "1.2.17"
 
 colors:
   catppuccin:
@@ -104,6 +104,10 @@ applications:
     theme: configs/shared/walker/themes/karamel/style.css
   dms:
     settings: configs/shared/DankMaterialShell/settings.json
+  noctalia:
+    settings: configs/shared/noctalia/settings.json
+    description: "Alternative quickshell-based desktop shell"
+    launch_command: "qs -c noctalia-shell"
   shell-switch:
     config: configs/shared/shell-switch/
     command: shell-switch

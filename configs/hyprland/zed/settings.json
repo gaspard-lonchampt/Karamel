@@ -7,12 +7,13 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "git_panel": {
+    "tree_view": true
+  },
   "buffer_font_family": "FiraCode Nerd Font Mono",
-  "vim_mode": false,
   "session": {
     "trust_all_worktrees": true,
   },
-  "helix_mode": true,
   "title_bar": {
     "show_menus": false,
     "show_sign_in": false,

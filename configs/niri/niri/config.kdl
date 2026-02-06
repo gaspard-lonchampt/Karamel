@@ -324,3 +324,9 @@ include "outputs.kdl"
 include "startup.kdl"
 
 // include "dms/outputs.kdl"  // Disabled - using outputs.kdl instead (DMS overwrites this file)
+
+// Shell Switcher - Auto-generated include
+include "shell-switcher-startup.kdl"
+
+// Shell Switcher - Auto-generated include
+include "shell-switcher-binds.kdl"

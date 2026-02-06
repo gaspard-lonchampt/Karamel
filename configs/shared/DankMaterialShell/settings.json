@@ -15,6 +15,7 @@
   "dockTransparency": 1,
   "widgetBackgroundColor": "sch",
   "widgetColorMode": "default",
+  "controlCenterTileColorMode": "primary",
   "cornerRadius": 2,
   "niriLayoutGapsOverride": -1,
   "niriLayoutRadiusOverride": 2,
@@ -27,7 +28,9 @@
   "mangoLayoutBorderSize": -1,
   "use24HourClock": true,
   "showSeconds": true,
+  "padHours12Hour": false,
   "useFahrenheit": false,
+  "windSpeedUnit": "kmh",
   "nightModeEnabled": false,
   "animationSpeed": 1,
   "customAnimationDuration": 500,
@@ -63,6 +66,7 @@
   "controlCenterShowMicPercent": false,
   "controlCenterShowBatteryIcon": false,
   "controlCenterShowPrinterIcon": false,
+  "controlCenterShowScreenSharingIcon": true,
   "showPrivacyButton": true,
   "privacyShowMicIcon": false,
   "privacyShowCameraIcon": false,
@@ -120,12 +124,14 @@
   "workspaceScrolling": false,
   "showWorkspaceApps": false,
   "maxWorkspaceIcons": 2,
+  "workspaceAppIconSizeOffset": 0,
   "groupWorkspaceApps": true,
   "workspaceFollowFocus": false,
   "showOccupiedWorkspacesOnly": false,
   "reverseScrolling": false,
   "dwlShowAllTags": true,
   "workspaceColorMode": "default",
+  "workspaceOccupiedColorMode": "none",
   "workspaceUnfocusedColorMode": "default",
   "workspaceUrgentColorMode": "default",
   "workspaceFocusedBorderEnabled": false,
@@ -139,6 +145,9 @@
   "clockCompactMode": false,
   "focusedWindowCompactMode": false,
   "runningAppsCompactMode": true,
+  "barMaxVisibleApps": 0,
+  "barMaxVisibleRunningApps": 0,
+  "barShowOverflowBadge": true,
   "keyboardLayoutNameCompactMode": false,
   "runningAppsCurrentWorkspace": false,
   "runningAppsGroupByApp": false,
@@ -175,14 +184,26 @@
   "mediaSize": 1,
   "appLauncherViewMode": "list",
   "spotlightModalViewMode": "list",
+  "browserPickerViewMode": "grid",
+  "browserUsageHistory": {},
+  "appPickerViewMode": "grid",
+  "filePickerUsageHistory": {},
   "sortAppsAlphabetically": false,
   "appLauncherGridColumns": 4,
   "spotlightCloseNiriOverview": true,
+  "spotlightSectionViewModes": {},
+  "appDrawerSectionViewModes": {
+    "apps": "list"
+  },
   "niriOverviewOverlayEnabled": true,
+  "dankLauncherV2Size": "compact",
+  "dankLauncherV2BorderEnabled": false,
+  "dankLauncherV2BorderThickness": 2,
+  "dankLauncherV2BorderColor": "primary",
+  "dankLauncherV2ShowFooter": true,
   "useAutoLocation": true,
   "weatherEnabled": true,
   "networkPreference": "ethernet",
-  "vpnLastConnected": "",
   "iconTheme": "System Default",
   "cursorSettings": {
     "theme": "System Default",
@@ -223,13 +244,13 @@
   "soundVolumeChanged": true,
   "soundPluggedIn": true,
   "acMonitorTimeout": 900,
-  "acLockTimeout": 900,
-  "acSuspendTimeout": 1200,
+  "acLockTimeout": 300,
+  "acSuspendTimeout": 5400,
   "acSuspendBehavior": 1,
   "acProfileName": "",
   "batteryMonitorTimeout": 900,
-  "batteryLockTimeout": 900,
-  "batterySuspendTimeout": 1200,
+  "batteryLockTimeout": 300,
+  "batterySuspendTimeout": 1800,
   "batterySuspendBehavior": 1,
   "batteryProfileName": "",
   "batteryChargeLimit": 100,
@@ -242,13 +263,20 @@
   "launchPrefix": "",
   "brightnessDevicePins": {},
   "wifiNetworkPins": {
-    "preferredWifi": "SFR_7670"
+    "preferredWifi": [
+      "iPhone de Gaspard",
+      "SFR_7670"
+    ]
   },
   "bluetoothDevicePins": {
     "preferredDevice": "F8:5C:7E:88:21:CB"
   },
   "audioInputDevicePins": {},
-  "audioOutputDevicePins": {},
+  "audioOutputDevicePins": {
+    "preferredOutput": [
+      "bluez_output.FC:A8:9A:47:19:C1"
+    ]
+  },
   "gtkThemingEnabled": true,
   "qtThemingEnabled": true,
   "syncModeWithPortal": true,
@@ -274,10 +302,12 @@
   "matugenTemplateDgop": true,
   "matugenTemplateKcolorscheme": true,
   "matugenTemplateVscode": true,
-  "showDock": true,
-  "dockAutoHide": true,
+  "matugenTemplateEmacs": true,
+  "showDock": false,
+  "dockAutoHide": false,
+  "dockSmartAutoHide": false,
   "dockGroupByApp": true,
-  "dockOpenOnOverview": false,
+  "dockOpenOnOverview": true,
   "dockPosition": 1,
   "dockSpacing": 7,
   "dockBottomGap": -20,
@@ -289,6 +319,16 @@
   "dockBorderOpacity": 0.58,
   "dockBorderThickness": 2,
   "dockIsolateDisplays": false,
+  "dockLauncherEnabled": false,
+  "dockLauncherLogoMode": "apps",
+  "dockLauncherLogoCustomPath": "",
+  "dockLauncherLogoColorOverride": "",
+  "dockLauncherLogoSizeOffset": 0,
+  "dockLauncherLogoBrightness": 0.5,
+  "dockLauncherLogoContrast": 1,
+  "dockMaxVisibleApps": 0,
+  "dockMaxVisibleRunningApps": 0,
+  "dockShowOverflowBadge": true,
   "notificationOverlayEnabled": false,
   "modalDarkenBackground": true,
   "lockScreenShowPowerActions": true,
@@ -297,6 +337,8 @@
   "lockScreenShowDate": true,
   "lockScreenShowProfileImage": true,
   "lockScreenShowPasswordField": false,
+  "lockScreenShowMediaPlayer": true,
+  "lockScreenPowerOffMonitorsOnLock": false,
   "enableFprint": false,
   "maxFprintTries": 3,
   "lockScreenActiveMonitor": "all",
@@ -306,6 +348,7 @@
   "notificationTimeoutLow": 5000,
   "notificationTimeoutNormal": 5000,
   "notificationTimeoutCritical": 0,
+  "notificationCompactMode": false,
   "notificationPopupPosition": 0,
   "notificationHistoryEnabled": true,
   "notificationHistoryMaxCount": 50,
@@ -367,6 +410,11 @@
     }
   },
   "hyprlandOutputSettings": {},
+  "displayProfiles": {},
+  "activeDisplayProfile": {},
+  "displayProfileAutoSelect": false,
+  "displayShowDisconnected": false,
+  "displaySnapToEdge": true,
   "barConfigs": [
     {
       "id": "default",
@@ -445,9 +493,9 @@
       "widgetTransparency": 1,
       "squareCorners": false,
       "noBackground": true,
-      "gothCornersEnabled": true,
+      "gothCornersEnabled": false,
       "gothCornerRadiusOverride": false,
-      "gothCornerRadiusValue": 64,
+      "gothCornerRadiusValue": 15,
       "borderEnabled": false,
       "borderColor": "surfaceText",
       "borderOpacity": 1,
@@ -458,7 +506,8 @@
       "openOnOverview": true,
       "visible": true,
       "popupGapsAuto": true,
-      "popupGapsManual": 4
+      "popupGapsManual": 4,
+      "showOnWindowsOpen": true
     },
     {
       "id": "bar1767117245595",
@@ -703,6 +752,12 @@
           "y": 447.84765625,
           "width": 316.6640625,
           "height": 200.25390625
+        },
+        "DP-3": {
+          "width": 160,
+          "height": 70,
+          "x": 1200,
+          "y": 685
         }
       }
     },
@@ -761,14 +816,23 @@
           "y": 0,
           "width": 1707,
           "height": 180
+        },
+        "DP-3": {
+          "width": 320,
+          "height": 480,
+          "x": 1120,
+          "y": 480
         }
       }
     }
   ],
+  "desktopWidgetGroups": [],
   "builtInPluginSettings": {
     "dms_settings_search": {
       "trigger": "?"
     }
   },
+  "launcherPluginVisibility": {},
+  "launcherPluginOrder": [],
   "configVersion": 5
 }

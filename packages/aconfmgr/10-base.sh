@@ -7,6 +7,8 @@ AddPackage linux-firmware # Firmware files for Linux - Default set
 AddPackage amd-ucode # Microcode update image for AMD CPUs (Framework 16)
 AddPackage lvm2 # Logical Volume Manager 2 utilities (LUKS)
 AddPackage sudo # Give certain users the ability to run some commands as root
+AddPackage nftables # Netfilter tables userspace tools - firewall
+AddPackage usbguard # USBGuard rule-based device authorization - USB security
 
 # === GPU NVIDIA ===
 AddPackage nvidia-open-dkms # NVIDIA open kernel modules (RTX 50 series Blackwell)

@@ -5,9 +5,9 @@ project:
   name: Karamel
   description: Desktop environment for Hyprland & Niri with DankMaterialShell
   theme: Catppuccin Mocha
-  last_updated: "2026-02-05"
-  changelog: "feat(noctalia): centralize config and add Karamel icon"
-  version: "1.2.17"
+  last_updated: "2026-02-06"
+  changelog: "feat(security): add nftables firewall, DNS-over-TLS, kernel hardening, arch-audit, usbguard"
+  version: "1.2.18"
 
 colors:
   catppuccin:
@@ -666,6 +666,51 @@ voice_dictation:
     default_source: "Ryzen HD Audio Controller Digital Microphone"
     note: "Digital mic works better than Stereo mic on Linux AMD Ryzen"
   note: "Replaced voxtype-bin on 2026-01-26. Toggle mode with notifications."
+
+security:
+  firewall:
+    backend: nftables
+    config: /etc/nftables.conf
+    service: nftables.service
+    policy: "drop incoming, accept outgoing, accept established/related"
+    rules:
+      - "Drop invalid connections"
+      - "Accept established/related connections"
+      - "Accept loopback"
+      - "Accept ICMP v4/v6"
+      - "Rate limit and reject other traffic"
+    note: "SSH rule removed (sshd disabled). Enable: sudo systemctl enable --now nftables"
+  dns:
+    backend: systemd-resolved
+    protocol: DNS-over-TLS
+    servers:
+      primary: "9.9.9.9#dns.quad9.net"
+      secondary: "149.112.112.112#dns.quad9.net"
+      ipv6: "2620:fe::fe#dns.quad9.net"
+      fallback: "1.1.1.1#cloudflare-dns.com"
+    config: /etc/systemd/resolved.conf
+    networkmanager_config: /etc/NetworkManager/conf.d/dns.conf
+    note: "Quad9 primary, Cloudflare fallback. DNSSEC allow-downgrade."
+  kernel_hardening:
+    config: /etc/sysctl.d/99-security.conf
+    parameters:
+      - "kernel.kptr_restrict = 2 (hide kernel pointers)"
+      - "kernel.kexec_load_disabled = 1 (prevent kernel replacement)"
+      - "net.ipv4.conf.all.rp_filter = 1 (anti IP spoofing)"
+      - "net.ipv4.conf.all.accept_redirects = 0 (refuse ICMP redirects)"
+      - "net.ipv6.conf.all.accept_redirects = 0 (refuse IPv6 ICMP redirects)"
+      - "net.ipv4.conf.all.log_martians = 1 (log impossible addresses)"
+  audit:
+    tool: arch-audit
+    command: "arch-audit"
+    note: "Checks installed packages against Arch Security Team CVE database"
+  usb_control:
+    tool: usbguard
+    service: usbguard.service
+    policy: /etc/usbguard/rules.conf
+    note: "Whitelist-based USB device control. Generate initial policy with: sudo usbguard generate-policy"
+  note: "Docker ports are protected by nftables input policy drop - no daemon.json needed"
+  configured: "2026-02-06"
 
 flatpak:
   packages:

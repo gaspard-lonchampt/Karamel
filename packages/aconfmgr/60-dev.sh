@@ -34,4 +34,5 @@ AddPackage ollama-cuda # LLM runtime with CUDA support
 AddPackage --foreign opencode-bin # AI coding agent for terminal
 
 # === SYSTEM CONFIG ===
+AddPackage arch-audit # A utility like pkg-audit based on Arch Security Team data
 AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux

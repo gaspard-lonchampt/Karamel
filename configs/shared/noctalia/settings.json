@@ -7,7 +7,7 @@
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
         "enableClipPreview": true,
-        "enableClipboardHistory": false,
+        "enableClipboardHistory": true,
         "enableSettingsSearch": true,
         "enableWindowsSearch": true,
         "iconMode": "tabler",
@@ -168,14 +168,6 @@
                     "id": "Bluetooth"
                 },
                 {
-                    "deviceNativePath": "__default__",
-                    "hideIfIdle": false,
-                    "hideIfNotDetected": true,
-                    "id": "Battery",
-                    "showNoctaliaPerformance": false,
-                    "showPowerProfiles": false
-                },
-                {
                     "displayMode": "onhover",
                     "id": "Volume",
                     "middleClickCommand": "pwvucontrol || pavucontrol"
@@ -183,6 +175,17 @@
                 {
                     "displayMode": "onhover",
                     "id": "Brightness"
+                },
+                {
+                    "id": "NightLight"
+                },
+                {
+                    "deviceNativePath": "__default__",
+                    "hideIfIdle": false,
+                    "hideIfNotDetected": true,
+                    "id": "Battery",
+                    "showNoctaliaPerformance": false,
+                    "showPowerProfiles": false
                 },
                 {
                     "colorizeDistroLogo": false,
@@ -223,7 +226,7 @@
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
-        "predefinedScheme": "Catppuccin",
+        "predefinedScheme": "Nord",
         "schedulingMode": "off",
         "useWallpaperColors": false
     },
@@ -317,7 +320,7 @@
         "animationDisabled": false,
         "animationSpeed": 1,
         "autoStartAuth": false,
-        "avatarImage": "/home/sarp/.face",
+        "avatarImage": "/home/sarp/Karamel/assets/karamel-logo-rounded.png",
         "boxRadiusRatio": 1,
         "compactLockScreen": false,
         "dimmerOpacity": 0.2,
@@ -395,7 +398,7 @@
         "monitors": [
         ],
         "normalUrgencyDuration": 8,
-        "overlayLayer": true,
+        "overlayLayer": false,
         "respectExpireTimeout": false,
         "saveToHistory": {
             "critical": true,
@@ -421,7 +424,7 @@
             1,
             2
         ],
-        "location": "top_right",
+        "location": "bottom_left",
         "monitors": [
         ],
         "overlayLayer": true
